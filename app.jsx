@@ -725,6 +725,12 @@ const App = () => {
     });
   };
 
+  const normalizeSourceLead = (value) =>
+    String(value || "").replace(
+      /^(Argues|Asserts|Centers|Continues|Contrasts|Describes|Draws|Emphasizes|Exposes|Finds|Focuses|Frames|Highlights|Maintains|Notes|Notices|Observes|Points out|Points|Presents|Presses|Reads|Remarks|Sees|Shows|Stresses|Suggests|Treats|Uses|Warns)\b/,
+      (match) => match.toLowerCase(),
+    );
+
   const renderNumberedItem = (item, itemIndex, cardTitle) => {
     const theme = getCardTheme(cardTitle);
     const isStructuredItem = item && typeof item === "object";
@@ -732,6 +738,7 @@ const App = () => {
     const source = String(isStructuredItem ? item.source || "" : "").trim();
     const reference = String(isStructuredItem ? item.reference || "" : "").trim();
     const itemType = String(isStructuredItem ? item.type || "" : "").trim();
+    const displayText = cardTitle === "Commentary Insights" && source ? normalizeSourceLead(text) : text;
 
     return (
       <li key={itemIndex} className={`pl-1 marker:font-display marker:text-sm marker:font-bold ${theme.marker}`}>
@@ -758,11 +765,11 @@ const App = () => {
           <p className="text-[16px] font-normal leading-8 text-slate-700">
             {cardTitle === "Commentary Insights" && source ? (
               <>
-                <span>{source}: </span>
-                {renderGlossaryText(text, `${cardTitle}-${itemIndex}`)}
+                <span>{source} </span>
+                {renderGlossaryText(displayText, `${cardTitle}-${itemIndex}`)}
               </>
             ) : (
-              renderGlossaryText(text, `${cardTitle}-${itemIndex}`)
+              renderGlossaryText(displayText, `${cardTitle}-${itemIndex}`)
             )}
           </p>
         </div>
