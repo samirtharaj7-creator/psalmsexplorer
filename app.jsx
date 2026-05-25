@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Users,
@@ -368,11 +368,115 @@ const glossaryPattern = new RegExp(
   "gi",
 );
 
+const normalizeFinderText = (value) =>
+  String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s:-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const slugify = (value) =>
+  String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const cardAnchorId = (title) => `deep-dive-card-${slugify(title)}`;
+
+const collectCardText = (card) => {
+  const pieces = [card?.title, card?.content];
+  if (Array.isArray(card?.sections)) {
+    card.sections.forEach((section) => pieces.push(section.label, section.content));
+  }
+  if (Array.isArray(card?.items)) {
+    card.items.forEach((item) => {
+      if (item && typeof item === "object") {
+        pieces.push(item.source, item.reference, item.type, item.text);
+      } else {
+        pieces.push(item);
+      }
+    });
+  }
+  if (card?.outline) {
+    pieces.push(card.outline.theme);
+    (card.outline.items || []).forEach((item) => pieces.push(item.label, item.range));
+  }
+  return pieces.filter(Boolean).join(" ");
+};
+
+const deepDiveTocItems = [
+  ["Historical Background", "Background"],
+  ["Context Type", "Context"],
+  ["Poetic Features", "Poetry"],
+  ["Scholarly Voices", "Voices"],
+  ["NT Cross-Reference Tracker", "NT"],
+  ["Christ in the Old Testament", "Christ"],
+  ["Brief Outline", "Outline"],
+  ["Jewish Tradition", "Jewish"],
+  ["Brief Exposition", "Exposition"],
+];
+
+const quickFilters = [
+  { id: "lament", label: "lament", psalms: [3,4,5,6,7,10,12,13,17,22,25,31,35,38,42,44,51,55,69,74,77,80,88,102,109,130,137,143] },
+  { id: "forgiveness", label: "forgiveness", psalms: [6,25,32,38,51,65,85,86,103,130,143] },
+  { id: "fear", label: "fear", psalms: [3,4,23,27,34,46,56,57,62,91,94,118,121] },
+  { id: "praise", label: "praise", psalms: [8,19,29,33,66,96,100,103,104,111,113,117,135,136,145,146,147,148,149,150] },
+  { id: "messianic", label: "messianic", psalms: [2,16,22,24,40,45,69,72,89,110,118,132] },
+  { id: "wisdom", label: "wisdom", psalms: [1,19,32,34,37,49,73,78,90,112,119,127,128] },
+  { id: "trust", label: "trust", psalms: [11,16,23,27,31,46,56,62,63,91,121,125,131] },
+  { id: "thanksgiving", label: "thanksgiving", psalms: [18,30,32,34,40,66,92,107,116,118,124,136,138] },
+];
+
+const themePathways = [
+  {
+    id: "afraid",
+    title: "When You Feel Afraid",
+    desc: "Prayers of refuge, courage, and steadied trust.",
+    psalms: [3, 23, 27, 34, 46, 56, 91, 121],
+  },
+  {
+    id: "forgiveness",
+    title: "When You Need Forgiveness",
+    desc: "Confession, mercy, cleansing, and restored joy.",
+    psalms: [6, 32, 38, 51, 103, 130, 143],
+  },
+  {
+    id: "suffering",
+    title: "When You Are Suffering",
+    desc: "Honest lament for pain, waiting, and unanswered questions.",
+    psalms: [13, 22, 42, 44, 69, 88, 102, 137],
+  },
+  {
+    id: "praise",
+    title: "Learning to Praise",
+    desc: "Creation, rescue, kingship, gratitude, and final hallelujah.",
+    psalms: [8, 19, 100, 103, 104, 145, 146, 148, 150],
+  },
+  {
+    id: "messianic",
+    title: "Messianic Hope",
+    desc: "Royal promise, righteous suffering, priestly kingship, and victory.",
+    psalms: [2, 16, 22, 45, 69, 72, 110, 118],
+  },
+  {
+    id: "wisdom",
+    title: "Wisdom for the Way",
+    desc: "The blessed life, Torah delight, and steady obedience.",
+    psalms: [1, 19, 37, 73, 90, 112, 119, 127, 128],
+  },
+];
+
+const featuredFinderPsalms = [1, 2, 22, 23, 32, 51, 73, 88, 90, 110, 119, 150];
+
 const App = () => {
   const [activePsalm, setActivePsalm] = useState(1);
   const [brief, setBrief] = useState(psalmBriefs[1]);
   const [explorerData, setExplorerData] = useState({ type: null, data: null });
   const [error, setError] = useState(null);
+  const [finderQuery, setFinderQuery] = useState("");
+  const [finderFilter, setFinderFilter] = useState(null);
+  const [activePathway, setActivePathway] = useState(null);
+  const [visibleFinderCount, setVisibleFinderCount] = useState(12);
 
   const authChartRef = useRef(null);
   const eraChartRef = useRef(null);
@@ -495,6 +599,173 @@ const App = () => {
     },
   ];
 
+  const psalmSearchIndex = useMemo(() => {
+    const themeTerms = themeCategories.flatMap((category) =>
+      category.terms.map((term) => ({
+        category: category.group,
+        label: term.label,
+        psalms: term.psalms,
+      })),
+    );
+
+    const extractSources = (briefData) => {
+      const sources = new Set();
+      (briefData?.cards || []).forEach((card) => {
+        (card.items || []).forEach((item) => {
+          if (item && typeof item === "object" && item.source) sources.add(item.source);
+        });
+      });
+      return Array.from(sources);
+    };
+
+    return Array.from({ length: 150 }, (_, index) => {
+      const psalm = index + 1;
+      const briefData = psalmBriefs[psalm];
+      const authors = authorshipData.filter((author) => author.psalms.includes(psalm)).map((author) => author.name);
+      const genres = genresData.filter((genre) => genre.psalms.includes(psalm)).map((genre) => genre.title);
+      const themes = themeTerms.filter((term) => term.psalms.includes(psalm)).map((term) => term.label);
+      const themeGroups = Array.from(new Set(themeTerms.filter((term) => term.psalms.includes(psalm)).map((term) => term.category)));
+      const era = erasData.find((item) => item.psalms.includes(psalm));
+      const canonicalBook = canonicalBooksData.find((book) => book.psalms.includes(psalm));
+      const sources = extractSources(briefData);
+      const cardText = (briefData?.cards || []).map(collectCardText).join(" ");
+      const metadataText = [
+        `Psalm ${psalm}`,
+        ...authors,
+        ...genres,
+        ...themes,
+        ...themeGroups,
+        era?.title,
+        era?.years,
+        canonicalBook?.title,
+        canonicalBook?.role,
+        ...sources,
+      ].join(" ");
+      const searchText = normalizeFinderText(`${metadataText} ${cardText}`);
+
+      return {
+        psalm,
+        title: `Psalm ${psalm}`,
+        authors,
+        genres,
+        themes,
+        themeGroups,
+        era: era?.title || "",
+        canonical: canonicalBook ? `${canonicalBook.title} (${canonicalBook.role})` : "",
+        sources,
+        metadataText: normalizeFinderText(metadataText),
+        searchText,
+        summaryLabels: [canonicalBook?.title, genres[0], themes[0] || authors[0]].filter(Boolean),
+      };
+    });
+  }, []);
+
+  const finderResults = useMemo(() => {
+    const query = normalizeFinderText(finderQuery);
+    const queryTerms = query.split(" ").filter(Boolean);
+    const queryNumber = Number(query);
+    const selectedFilter = quickFilters.find((filter) => filter.id === finderFilter);
+    const queryMatchedFilter = !selectedFilter && query
+      ? quickFilters.find((filter) => normalizeFinderText(filter.label) === query || normalizeFinderText(filter.id) === query)
+      : null;
+    const activeFilter = selectedFilter || queryMatchedFilter;
+    const selectedPathway = themePathways.find((pathway) => pathway.id === activePathway);
+
+    if (selectedPathway) {
+      return selectedPathway.psalms
+        .map((psalm, order) => {
+          const entry = psalmSearchIndex.find((item) => item.psalm === psalm);
+          if (!entry) return null;
+          return {
+            ...entry,
+            score: 1000 - order,
+            matchLabels: [selectedPathway.title, ...entry.summaryLabels].filter(Boolean).slice(0, 4),
+          };
+        })
+        .filter(Boolean);
+    }
+
+    if (!query && !activeFilter) {
+      return featuredFinderPsalms
+        .map((psalm, order) => {
+          const entry = psalmSearchIndex.find((item) => item.psalm === psalm);
+          if (!entry) return null;
+          return {
+            ...entry,
+            score: 500 - order,
+            matchLabels: ["Suggested", ...entry.summaryLabels].filter(Boolean).slice(0, 4),
+          };
+        })
+        .filter(Boolean);
+    }
+
+    return psalmSearchIndex
+      .map((entry) => {
+        let score = 0;
+        const labels = [];
+
+        if (activeFilter) {
+          if (activeFilter.psalms.includes(entry.psalm)) {
+            score += 180;
+            labels.push(activeFilter.label);
+          }
+          if (entry.searchText.includes(activeFilter.id)) score += 20;
+        }
+
+        if (query) {
+          if (Number.isInteger(queryNumber) && entry.psalm === queryNumber) {
+            score += 1000;
+            labels.push("Exact match");
+          }
+
+          if (entry.metadataText.includes(query)) {
+            score += 110;
+            labels.push("Metadata");
+          } else if (entry.searchText.includes(query)) {
+            score += 55;
+            labels.push("Deep Dive");
+          }
+
+          queryTerms.forEach((term) => {
+            if (entry.metadataText.includes(term)) score += 24;
+            else if (entry.searchText.includes(term)) score += 8;
+          });
+        }
+
+        const matchLabels = Array.from(new Set([...labels, ...entry.summaryLabels])).slice(0, 4);
+        return { ...entry, score, matchLabels };
+      })
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score || a.psalm - b.psalm);
+  }, [activePathway, finderFilter, finderQuery, psalmSearchIndex]);
+
+  const visibleFinderResults = finderResults.slice(0, visibleFinderCount);
+  const selectedPathway = themePathways.find((pathway) => pathway.id === activePathway);
+  const selectedFilter = quickFilters.find((filter) => filter.id === finderFilter);
+
+  const resetFinderList = () => setVisibleFinderCount(12);
+
+  const handleFinderQueryChange = (value) => {
+    setFinderQuery(value);
+    setFinderFilter(null);
+    setActivePathway(null);
+    resetFinderList();
+  };
+
+  const handleQuickFilter = (filterId) => {
+    setFinderQuery("");
+    setActivePathway(null);
+    setFinderFilter((current) => (current === filterId ? null : filterId));
+    resetFinderList();
+  };
+
+  const handlePathway = (pathwayId) => {
+    setFinderQuery("");
+    setFinderFilter(null);
+    setActivePathway((current) => (current === pathwayId ? null : pathwayId));
+    resetFinderList();
+  };
+
   const scrollJump = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -569,7 +840,7 @@ const App = () => {
     "Historical Background": <History size={20} className="text-teal-700"/>,
     "Context Type": <Compass size={20} className="text-sky-700"/>,
     "Poetic Features": <Feather size={20} className="text-amber-700"/>,
-    "Commentary Insights": <ListChecks size={20} className="text-teal-700"/>,
+    "Scholarly Voices": <ListChecks size={20} className="text-teal-700"/>,
     "NT Cross-Reference Tracker": <ArrowRightLeft size={20} className="text-sky-700"/>,
     "Christ in the Old Testament": <Cross size={20} className="text-amber-700"/>,
     "Brief Outline": <FileText size={20} className="text-teal-700"/>,
@@ -608,7 +879,7 @@ const App = () => {
       label: "text-amber-800",
       themeBox: "border-amber-100 bg-amber-50/75",
     },
-    "Commentary Insights": {
+    "Scholarly Voices": {
       rail: "bg-emerald-500",
       border: "border-emerald-100",
       card: "bg-[#fbfff9]",
@@ -670,11 +941,11 @@ const App = () => {
     },
   };
 
-  const fallbackCardTheme = cardThemes["Commentary Insights"];
+  const fallbackCardTheme = cardThemes["Scholarly Voices"];
   const getCardTheme = (title) => cardThemes[title] || fallbackCardTheme;
 
   const numberedCards = new Set([
-    "Commentary Insights",
+    "Scholarly Voices",
     "NT Cross-Reference Tracker",
     "Christ in the Old Testament",
   ]);
@@ -738,12 +1009,12 @@ const App = () => {
     const source = String(isStructuredItem ? item.source || "" : "").trim();
     const reference = String(isStructuredItem ? item.reference || "" : "").trim();
     const itemType = String(isStructuredItem ? item.type || "" : "").trim();
-    const displayText = cardTitle === "Commentary Insights" && source ? normalizeSourceLead(text) : text;
+    const displayText = cardTitle === "Scholarly Voices" && source ? normalizeSourceLead(text) : text;
 
     return (
       <li key={itemIndex} className={`pl-1 marker:font-display marker:text-sm marker:font-bold ${theme.marker}`}>
         <div className="space-y-2">
-          {cardTitle !== "Commentary Insights" && (source || reference || itemType) && (
+          {cardTitle !== "Scholarly Voices" && (source || reference || itemType) && (
             <div className="flex flex-wrap gap-2">
               {source && (
                 <span className={`inline-flex rounded-full border px-3 py-1 font-sans text-[10px] font-black uppercase tracking-[0.14em] ${theme.chip}`}>
@@ -763,7 +1034,7 @@ const App = () => {
             </div>
           )}
           <p className="text-[16px] font-normal leading-8 text-slate-700">
-            {cardTitle === "Commentary Insights" && source ? (
+            {cardTitle === "Scholarly Voices" && source ? (
               <>
                 <span>{source} </span>
                 {renderGlossaryText(displayText, `${cardTitle}-${itemIndex}`)}
@@ -896,6 +1167,7 @@ const App = () => {
 
   const navItems = [
     ["intro", "Overview"],
+    ["finder", "Finder"],
     ["canonical", "Books"],
     ["authors", "Authors"],
     ["taxonomy", "Genres"],
@@ -1023,7 +1295,7 @@ const App = () => {
                         {introMoments[2].body}
                       </p>
                       <button
-                        onClick={() => scrollJump("canonical")}
+                        onClick={() => scrollJump("finder")}
                         className="mt-8 rounded-md bg-slate-950 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-[0_16px_34px_rgba(15,23,42,0.2)] transition hover:-translate-y-0.5 hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-200"
                       >
                         Explore Psalms
@@ -1050,6 +1322,154 @@ const App = () => {
                     className="h-[86vh]"
                   />
                 ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="finder" className="scroll-mt-28">
+            <div className="overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/88 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.08)] backdrop-blur lg:p-7">
+              <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg border border-teal-100 bg-teal-50 text-teal-700 shadow-sm">
+                    <Search size={22} />
+                  </div>
+                  <h2 className="font-display text-3xl font-bold tracking-tight text-slate-950 lg:text-5xl">Psalm Finder</h2>
+                  <p className="mt-3 max-w-2xl text-base font-medium leading-7 text-slate-600">
+                    Search by number, theme, author, source, cross-reference, or a word that names what you are carrying.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-amber-100 bg-amber-50/70 px-4 py-3 text-sm font-bold leading-6 text-amber-900">
+                  {selectedPathway ? selectedPathway.title : selectedFilter ? `Filtering by ${selectedFilter.label}` : finderQuery ? `Searching for "${finderQuery}"` : "Suggested starting points"}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr,0.9fr]">
+                <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-4">
+                  <div className="relative">
+                    <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-teal-600" />
+                    <input
+                      type="search"
+                      value={finderQuery}
+                      onChange={(event) => handleFinderQueryChange(event.target.value)}
+                      placeholder="Try 23, forgiveness, Romans 4, Keller, messianic..."
+                      className="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base font-bold text-slate-900 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-teal-300 focus:ring-4 focus:ring-teal-100"
+                    />
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {quickFilters.map((filter) => {
+                      const isActive = finderFilter === filter.id;
+                      return (
+                        <button
+                          key={filter.id}
+                          onClick={() => handleQuickFilter(filter.id)}
+                          className={`rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em] transition hover:-translate-y-0.5 ${
+                            isActive
+                              ? "border-teal-300 bg-teal-600 text-white shadow-[0_10px_24px_rgba(13,148,136,0.22)]"
+                              : "border-teal-100 bg-white text-slate-600 hover:border-teal-300 hover:text-teal-800"
+                          }`}
+                        >
+                          {filter.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-teal-100 bg-gradient-to-br from-teal-50/80 via-white to-amber-50/70 p-4">
+                  <div className="mb-3 flex items-center gap-2 text-teal-800">
+                    <Flame size={17} />
+                    <h3 className="text-[11px] font-black uppercase tracking-[0.16em]">Theme Pathways</h3>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {themePathways.map((pathway) => {
+                      const isActive = activePathway === pathway.id;
+                      return (
+                        <button
+                          key={pathway.id}
+                          onClick={() => handlePathway(pathway.id)}
+                          className={`rounded-lg border p-3 text-left transition hover:-translate-y-0.5 ${
+                            isActive
+                              ? "border-teal-300 bg-white shadow-[0_14px_30px_rgba(13,148,136,0.16)]"
+                              : "border-white/80 bg-white/70 hover:border-teal-200 hover:bg-white"
+                          }`}
+                        >
+                          <span className="block text-sm font-black leading-5 text-slate-900">{pathway.title}</span>
+                          <span className="mt-1 block text-xs font-medium leading-5 text-slate-500">{pathway.desc}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 border-t border-slate-100 pt-5">
+                <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <h3 className="font-display text-xl font-bold text-slate-950">
+                    {finderResults.length ? `${finderResults.length} psalm${finderResults.length === 1 ? "" : "s"} found` : "No psalms found"}
+                  </h3>
+                  {(finderQuery || finderFilter || activePathway) && (
+                    <button
+                      onClick={() => {
+                        setFinderQuery("");
+                        setFinderFilter(null);
+                        setActivePathway(null);
+                        resetFinderList();
+                      }}
+                      className="self-start rounded-md border border-slate-200 bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-slate-500 transition hover:border-teal-200 hover:text-teal-700 sm:self-auto"
+                    >
+                      Clear Finder
+                    </button>
+                  )}
+                </div>
+
+                {finderResults.length ? (
+                  <>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+                      {visibleFinderResults.map((result) => (
+                        <div key={result.psalm} className="group rounded-xl border border-white/80 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_20px_42px_rgba(15,23,42,0.1)]">
+                          <div className="mb-3 flex items-start justify-between gap-3">
+                            <div>
+                              <h4 className="font-display text-2xl font-bold tracking-tight text-slate-950">Psalm {result.psalm}</h4>
+                              <p className="mt-1 text-xs font-black uppercase tracking-[0.12em] text-slate-400">{result.canonical}</p>
+                            </div>
+                            <button
+                              aria-label={`Study Psalm ${result.psalm}`}
+                              onClick={() => loadPsalmBrief(result.psalm)}
+                              className="rounded-md bg-slate-950 px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-sm transition hover:bg-teal-700"
+                            >
+                              Study Psalm
+                            </button>
+                          </div>
+                          <div className="mb-3 flex flex-wrap gap-2">
+                            {(result.matchLabels.length ? result.matchLabels : result.summaryLabels).map((label) => (
+                              <span key={`${result.psalm}-${label}`} className="rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-teal-700">
+                                {label}
+                              </span>
+                            ))}
+                          </div>
+                          <p className="text-sm font-medium leading-6 text-slate-600">
+                            {[result.authors[0], result.genres[0], result.themes[0]].filter(Boolean).join(" • ") || "Static study brief available"}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {finderResults.length > visibleFinderCount && (
+                      <div className="mt-5 flex justify-center">
+                        <button
+                          onClick={() => setVisibleFinderCount((count) => count + 12)}
+                          className="rounded-md border border-teal-100 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.14em] text-teal-700 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:bg-teal-50"
+                        >
+                          Show More
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center text-sm font-bold text-slate-500">
+                    Try a different word, source name, verse reference, or psalm number.
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -1167,11 +1587,23 @@ const App = () => {
 
                 {brief && (
                   <div className="relative z-10">
+                    <div className="sticky top-3 z-30 mb-4 flex flex-wrap gap-2 rounded-[1rem] border border-white/80 bg-white/85 p-3 shadow-[0_14px_34px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+                      {deepDiveTocItems.map(([title, label]) => (
+                        <button
+                          aria-label={`Jump to ${title}`}
+                          key={title}
+                          onClick={() => scrollJump(cardAnchorId(title))}
+                          className="rounded-full border border-amber-100 bg-[#fffdf7] px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-slate-500 transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-50 hover:text-teal-800"
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
                     <div className="grid grid-cols-1 gap-3.5">
                       {brief.cards.map((card, idx) => {
                         const theme = getCardTheme(card.title);
                         return (
-                        <div key={idx} className={`group relative overflow-visible rounded-[1.15rem] border ${theme.border} ${theme.card} shadow-[0_14px_42px_rgba(15,23,42,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_52px_rgba(15,23,42,0.1)]`}>
+                        <div id={cardAnchorId(card.title)} key={idx} className={`group relative scroll-mt-28 overflow-visible rounded-[1.15rem] border ${theme.border} ${theme.card} shadow-[0_14px_42px_rgba(15,23,42,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_52px_rgba(15,23,42,0.1)]`}>
                           <div className={`absolute left-0 top-0 h-full w-1 rounded-l-[1.15rem] ${theme.rail}`} />
                           <div className={`flex items-center gap-3 rounded-t-[1.15rem] border-b ${theme.border} bg-gradient-to-r ${theme.header} px-4 py-3 text-[11px] font-black uppercase tracking-[0.12em] text-slate-600`}>
                             <div className={`rounded-lg border bg-white p-2 shadow-sm ${theme.border}`}>{cardIcons[card.title] || <Info size={20} className="text-teal-700"/>}</div> {card.title}
