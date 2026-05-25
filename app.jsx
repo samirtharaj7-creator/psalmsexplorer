@@ -375,6 +375,59 @@ const normalizeFinderText = (value) =>
     .replace(/\s+/g, " ")
     .trim();
 
+const textIncludesFinderPhrase = (text, phrase) => {
+  if (!phrase) return false;
+  if (/\d/.test(phrase)) {
+    return new RegExp(`\\b${escapeRegExp(phrase)}(?::|\\b(?!\\d))`, "i").test(text);
+  }
+  return text.includes(phrase);
+};
+
+const ntBookNames = [
+  "1 thessalonians",
+  "2 thessalonians",
+  "1 corinthians",
+  "2 corinthians",
+  "1 timothy",
+  "2 timothy",
+  "1 peter",
+  "2 peter",
+  "1 john",
+  "2 john",
+  "3 john",
+  "matthew",
+  "romans",
+  "galatians",
+  "ephesians",
+  "philippians",
+  "colossians",
+  "hebrews",
+  "revelation",
+  "luke",
+  "john",
+  "acts",
+  "mark",
+  "titus",
+  "philemon",
+  "james",
+  "jude",
+].sort((a, b) => b.length - a.length);
+
+const parseReferenceQuery = (query) => {
+  const book = ntBookNames.find((name) => query === name || query.startsWith(`${name} `));
+  if (!book) return null;
+  const rest = query.slice(book.length).trim();
+  if (!rest) return null;
+  const match = rest.match(/^(\d+)(?::(\d+)(?:-\d+)?)?$/);
+  if (!match) return null;
+  return {
+    book,
+    chapter: match[1],
+    verse: match[2] || "",
+    phrase: `${book} ${match[1]}${match[2] ? `:${match[2]}` : ""}`,
+  };
+};
+
 const slugify = (value) =>
   String(value || "")
     .toLowerCase()
@@ -663,7 +716,9 @@ const App = () => {
   const finderResults = useMemo(() => {
     const query = normalizeFinderText(finderQuery);
     const queryTerms = query.split(" ").filter(Boolean);
+    const meaningfulQueryTerms = queryTerms.filter((term) => !/^\d+$/.test(term) && term.length > 1);
     const queryNumber = Number(query);
+    const referenceQuery = parseReferenceQuery(query);
     const selectedFilter = quickFilters.find((filter) => filter.id === finderFilter);
     const queryMatchedFilter = !selectedFilter && query
       ? quickFilters.find((filter) => normalizeFinderText(filter.label) === query || normalizeFinderText(filter.id) === query)
@@ -718,15 +773,28 @@ const App = () => {
             labels.push("Exact match");
           }
 
-          if (entry.metadataText.includes(query)) {
+          if (referenceQuery) {
+            if (textIncludesFinderPhrase(entry.searchText, referenceQuery.phrase)) {
+              score += 900;
+              labels.push("Reference");
+            } else {
+              return { ...entry, score: 0, matchLabels: [] };
+            }
+          } else if (textIncludesFinderPhrase(entry.metadataText, query)) {
             score += 110;
             labels.push("Metadata");
-          } else if (entry.searchText.includes(query)) {
+          } else if (textIncludesFinderPhrase(entry.searchText, query)) {
             score += 55;
             labels.push("Deep Dive");
           }
 
-          queryTerms.forEach((term) => {
+          const requiresNarrowMatch = queryTerms.length > 1 && meaningfulQueryTerms.length > 0 && !referenceQuery;
+          const hasAllMeaningfulTerms = meaningfulQueryTerms.every((term) => entry.searchText.includes(term));
+          if (requiresNarrowMatch && !textIncludesFinderPhrase(entry.searchText, query) && !hasAllMeaningfulTerms) {
+            return { ...entry, score: 0, matchLabels: [] };
+          }
+
+          meaningfulQueryTerms.forEach((term) => {
             if (entry.metadataText.includes(term)) score += 24;
             else if (entry.searchText.includes(term)) score += 8;
           });
