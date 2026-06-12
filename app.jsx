@@ -608,8 +608,8 @@ const App = () => {
   const themeCategories = [
     {
       group: "Attributes of YHWH",
-      color: "border-sky-100 bg-sky-50/80 text-sky-950",
-      icon: <ShieldCheck size={20} className="text-sky-600"/>,
+      color: "border-[#d2d6df] bg-[#eef0f2]/80 text-[#243041]",
+      icon: <ShieldCheck size={20} className="text-[#59687a]"/>,
       terms: [
         { label: "Hesed", weight: "text-lg font-bold", psalms: [13, 25, 36, 51, 86, 89, 103, 107, 136] },
         { label: "Judge", weight: "text-sm font-medium", psalms: [50, 75, 82, 94, 96, 98] },
@@ -619,8 +619,8 @@ const App = () => {
     },
     {
       group: "The Human Cry",
-      color: "border-amber-100 bg-amber-50/80 text-amber-950",
-      icon: <Heart size={20} className="text-amber-600"/>,
+      color: "border-[#e5d1a4] bg-[#f7e7c2]/60 text-[#4a3520]",
+      icon: <Heart size={20} className="text-[#b97818]"/>,
       terms: [
         { label: "Wait", weight: "text-xl font-extrabold", psalms: [25, 27, 33, 37, 40, 62, 130] },
         { label: "Enemies", weight: "text-base font-semibold", psalms: [3, 27, 35, 55, 56, 59, 109, 143] },
@@ -630,8 +630,8 @@ const App = () => {
     },
     {
       group: "The Messianic Hope",
-      color: "border-teal-100 bg-teal-50/80 text-teal-950",
-      icon: <Zap size={20} className="text-teal-600"/>,
+      color: "border-[#cfdbc9] bg-[#edf2e5]/70 text-[#243021]",
+      icon: <Zap size={20} className="text-[#65775c]"/>,
       terms: [
         { label: "Royal Priest", weight: "text-xl font-extrabold", psalms: [2, 45, 72, 110, 132] },
         { label: "Kingdom", weight: "text-lg font-bold", psalms: [2, 22, 47, 93, 96, 97, 99, 145] },
@@ -641,8 +641,8 @@ const App = () => {
     },
     {
       group: "Presence & Torah",
-      color: "border-lime-100 bg-lime-50/80 text-lime-950",
-      icon: <Anchor size={20} className="text-lime-700"/>,
+      color: "border-[#e2c9b8] bg-[#f3e2d6]/60 text-[#3f2b20]",
+      icon: <Anchor size={20} className="text-[#9b5b3b]"/>,
       terms: [
         { label: "Zion", weight: "text-xl font-extrabold", psalms: [2, 48, 76, 84, 87, 122, 125, 126, 137] },
         { label: "Sanctuary", weight: "text-lg font-bold", psalms: [20, 63, 68, 73, 77, 96, 150] },
@@ -876,10 +876,10 @@ const App = () => {
       if (ref.current) charts.push(new Chart(ref.current, cfg));
     };
 
-    build(canonicalChartRef, { type: "bar", data: { labels: canonicalBooksData.map(book => book.title), datasets: [{ data: canonicalBooksData.map(book => book.psalms.length), backgroundColor: ["#14b8a6", "#38bdf8", "#f59e0b", "#8b5cf6", "#22c55e"], borderRadius: 8 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "canonical", data: canonicalBooksData[els[0].index] }); }, scales: { x: { grid: { display: false } } } } });
-    build(authChartRef, { type: "doughnut", data: { labels: authorshipData.map(a => a.name), datasets: [{ data: authorshipData.map(a => a.psalms.length), backgroundColor: ["#14b8a6", "#38bdf8", "#f59e0b", "#84cc16", "#06b6d4", "#f97316", "#22c55e", "#0f172a"], borderWidth: 4, borderColor: "#ffffff" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "auth", data: authorshipData[els[0].index] }); } } });
-    build(eraChartRef, { type: "bar", data: { labels: erasData.map(e => e.title), datasets: [{ data: erasData.map(e => e.psalms.length), backgroundColor: ["#14b8a6", "#f59e0b", "#38bdf8"], borderRadius: 8 }] }, options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "era", data: erasData[els[0].index] }); }, scales: { y: { grid: { display: false } } } } });
-    build(genreChartRef, { type: "doughnut", data: { labels: genresData.map(g => g.title), datasets: [{ data: genresData.map(g => g.psalms.length), backgroundColor: ["#f59e0b", "#14b8a6", "#38bdf8", "#22c55e", "#f97316", "#06b6d4", "#84cc16", "#0f172a"], borderWidth: 4, borderColor: "#ffffff" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "genre", data: genresData[els[0].index] }); } } });
+    build(canonicalChartRef, { type: "bar", data: { labels: canonicalBooksData.map(book => book.title), datasets: [{ data: canonicalBooksData.map(book => book.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#2b2117"], borderRadius: 8 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "canonical", data: canonicalBooksData[els[0].index] }); }, scales: { x: { grid: { display: false } } } } });
+    build(authChartRef, { type: "doughnut", data: { labels: authorshipData.map(a => a.name), datasets: [{ data: authorshipData.map(a => a.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "auth", data: authorshipData[els[0].index] }); } } });
+    build(eraChartRef, { type: "bar", data: { labels: erasData.map(e => e.title), datasets: [{ data: erasData.map(e => e.psalms.length), backgroundColor: ["#65775c", "#b97818", "#59687a"], borderRadius: 8 }] }, options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "era", data: erasData[els[0].index] }); }, scales: { y: { grid: { display: false } } } } });
+    build(genreChartRef, { type: "doughnut", data: { labels: genresData.map(g => g.title), datasets: [{ data: genresData.map(g => g.psalms.length), backgroundColor: ["#b97818", "#65775c", "#59687a", "#9b5b3b", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "genre", data: genresData[els[0].index] }); } } });
 
     return () => charts.forEach(c => c.destroy());
   }, []);
@@ -905,107 +905,107 @@ const App = () => {
   };
 
   const cardIcons = {
-    "Historical Background": <History size={20} className="text-teal-700"/>,
-    "Context Type": <Compass size={20} className="text-sky-700"/>,
-    "Poetic Features": <Feather size={20} className="text-amber-700"/>,
-    "Scholarly Voices": <ListChecks size={20} className="text-teal-700"/>,
-    "NT Cross-Reference Tracker": <ArrowRightLeft size={20} className="text-sky-700"/>,
-    "Christ in the Old Testament": <Cross size={20} className="text-amber-700"/>,
-    "Brief Outline": <FileText size={20} className="text-teal-700"/>,
-    "Jewish Tradition": <Scroll size={20} className="text-sky-700"/>,
-    "Brief Exposition": <Mic2 size={20} className="text-sky-700"/>,
+    "Historical Background": <History size={20} className="text-[#65775c]"/>,
+    "Context Type": <Compass size={20} className="text-[#59687a]"/>,
+    "Poetic Features": <Feather size={20} className="text-[#b97818]"/>,
+    "Scholarly Voices": <ListChecks size={20} className="text-[#65775c]"/>,
+    "NT Cross-Reference Tracker": <ArrowRightLeft size={20} className="text-[#59687a]"/>,
+    "Christ in the Old Testament": <Cross size={20} className="text-[#59687a]"/>,
+    "Brief Outline": <FileText size={20} className="text-[#b97818]"/>,
+    "Jewish Tradition": <Scroll size={20} className="text-[#9b5b3b]"/>,
+    "Brief Exposition": <Mic2 size={20} className="text-[#65775c]"/>,
   };
 
   const cardThemes = {
     "Historical Background": {
-      rail: "bg-teal-500",
-      border: "border-teal-100",
-      card: "bg-[#fffdf7]",
-      header: "from-teal-50 via-white to-[#fff8e7]",
-      chip: "border-teal-100 bg-teal-50 text-teal-700",
-      marker: "marker:text-teal-700",
-      label: "text-teal-800",
-      themeBox: "border-teal-100 bg-teal-50/75",
+      rail: "bg-[#65775c]",
+      border: "border-[#d8cfb4]",
+      card: "bg-[#fff8ea]",
+      header: "from-[#f4ecd9] via-[#fff8ea] to-[#f9f1df]",
+      chip: "border-[#d8cfb4] bg-[#f3ead6] text-[#5f684d]",
+      marker: "marker:text-[#60704f]",
+      label: "text-[#60704f]",
+      themeBox: "border-[#d8cfb4] bg-[#f3ead6]/75",
     },
     "Context Type": {
-      rail: "bg-sky-500",
-      border: "border-sky-100",
-      card: "bg-[#fcfeff]",
-      header: "from-sky-50 via-white to-[#fff8e7]",
-      chip: "border-sky-100 bg-sky-50 text-sky-700",
-      marker: "marker:text-sky-700",
-      label: "text-sky-800",
-      themeBox: "border-sky-100 bg-sky-50/75",
+      rail: "bg-[#59687a]",
+      border: "border-[#d3d7dc]",
+      card: "bg-[#fbf8ef]",
+      header: "from-[#edf0ef] via-[#fff8ea] to-[#f6ead8]",
+      chip: "border-[#d3d7dc] bg-[#eef1ef] text-[#59687a]",
+      marker: "marker:text-[#59687a]",
+      label: "text-[#59687a]",
+      themeBox: "border-[#d3d7dc] bg-[#eef1ef]/75",
     },
     "Poetic Features": {
-      rail: "bg-amber-500",
-      border: "border-amber-100",
-      card: "bg-[#fffaf0]",
-      header: "from-amber-50 via-white to-orange-50",
-      chip: "border-amber-100 bg-amber-50 text-amber-700",
-      marker: "marker:text-amber-700",
-      label: "text-amber-800",
-      themeBox: "border-amber-100 bg-amber-50/75",
+      rail: "bg-[#b97818]",
+      border: "border-[#e5d1a4]",
+      card: "bg-[#fff8e8]",
+      header: "from-[#f5e4bf] via-[#fff8ea] to-[#f6ead8]",
+      chip: "border-[#e5d1a4] bg-[#f7e7c2] text-[#8a5614]",
+      marker: "marker:text-[#9a6418]",
+      label: "text-[#9a6418]",
+      themeBox: "border-[#e5d1a4] bg-[#f7e7c2]/75",
     },
     "Scholarly Voices": {
-      rail: "bg-emerald-500",
-      border: "border-emerald-100",
-      card: "bg-[#fbfff9]",
-      header: "from-emerald-50 via-white to-teal-50",
-      chip: "border-emerald-100 bg-emerald-50 text-emerald-700",
-      marker: "marker:text-emerald-700",
-      label: "text-emerald-800",
-      themeBox: "border-emerald-100 bg-emerald-50/75",
+      rail: "bg-[#65775c]",
+      border: "border-[#cfdbc9]",
+      card: "bg-[#fbfaf1]",
+      header: "from-[#e8eddf] via-[#fff8ea] to-[#f4ead7]",
+      chip: "border-[#cfdbc9] bg-[#edf2e5] text-[#4f684f]",
+      marker: "marker:text-[#557052]",
+      label: "text-[#557052]",
+      themeBox: "border-[#cfdbc9] bg-[#edf2e5]/75",
     },
     "NT Cross-Reference Tracker": {
-      rail: "bg-indigo-500",
-      border: "border-indigo-100",
-      card: "bg-[#fbfcff]",
-      header: "from-indigo-50 via-white to-sky-50",
-      chip: "border-indigo-100 bg-indigo-50 text-indigo-700",
-      marker: "marker:text-indigo-700",
-      label: "text-indigo-800",
-      themeBox: "border-indigo-100 bg-indigo-50/75",
+      rail: "bg-[#59687a]",
+      border: "border-[#d2d6df]",
+      card: "bg-[#fbfaf5]",
+      header: "from-[#e8ebef] via-[#fff8ea] to-[#f1e8d8]",
+      chip: "border-[#d2d6df] bg-[#eef0f2] text-[#59687a]",
+      marker: "marker:text-[#59687a]",
+      label: "text-[#59687a]",
+      themeBox: "border-[#d2d6df] bg-[#eef0f2]/75",
     },
     "Christ in the Old Testament": {
-      rail: "bg-sky-500",
-      border: "border-sky-100",
-      card: "bg-[#f8fdff]",
-      header: "from-sky-50 via-white to-indigo-50",
-      chip: "border-sky-100 bg-sky-50 text-sky-700",
-      marker: "marker:text-sky-700",
-      label: "text-sky-800",
-      themeBox: "border-sky-100 bg-sky-50/75",
+      rail: "bg-[#59687a]",
+      border: "border-[#d2d6df]",
+      card: "bg-[#fbfaf5]",
+      header: "from-[#e8ebef] via-[#fff8ea] to-[#f1e8d8]",
+      chip: "border-[#d2d6df] bg-[#eef0f2] text-[#59687a]",
+      marker: "marker:text-[#59687a]",
+      label: "text-[#59687a]",
+      themeBox: "border-[#d2d6df] bg-[#eef0f2]/75",
     },
     "Brief Outline": {
-      rail: "bg-amber-500",
-      border: "border-amber-100",
-      card: "bg-[#fffaf0]",
-      header: "from-amber-50 via-white to-yellow-50",
-      chip: "border-amber-100 bg-amber-50 text-amber-700",
-      marker: "marker:text-amber-700",
-      label: "text-amber-800",
-      themeBox: "border-amber-100 bg-amber-50/75",
+      rail: "bg-[#b97818]",
+      border: "border-[#e5d1a4]",
+      card: "bg-[#fff8e8]",
+      header: "from-[#f5e4bf] via-[#fff8ea] to-[#f6ead8]",
+      chip: "border-[#e5d1a4] bg-[#f7e7c2] text-[#8a5614]",
+      marker: "marker:text-[#9a6418]",
+      label: "text-[#9a6418]",
+      themeBox: "border-[#e5d1a4] bg-[#f7e7c2]/75",
     },
     "Jewish Tradition": {
-      rail: "bg-rose-500",
-      border: "border-rose-100",
-      card: "bg-[#fffafb]",
-      header: "from-rose-50 via-white to-violet-50",
-      chip: "border-rose-100 bg-rose-50 text-rose-700",
-      marker: "marker:text-rose-700",
-      label: "text-rose-800",
-      themeBox: "border-rose-100 bg-rose-50/75",
+      rail: "bg-[#9b5b3b]",
+      border: "border-[#e2c9b8]",
+      card: "bg-[#fff8ef]",
+      header: "from-[#f1dfd3] via-[#fff8ea] to-[#eee7dd]",
+      chip: "border-[#e2c9b8] bg-[#f3e2d6] text-[#8b4f35]",
+      marker: "marker:text-[#8b4f35]",
+      label: "text-[#8b4f35]",
+      themeBox: "border-[#e2c9b8] bg-[#f3e2d6]/75",
     },
     "Brief Exposition": {
-      rail: "bg-emerald-500",
-      border: "border-emerald-100",
-      card: "bg-[#fffdf7]",
-      header: "from-emerald-50 via-white to-amber-50",
-      chip: "border-emerald-100 bg-emerald-50 text-emerald-700",
-      marker: "marker:text-emerald-700",
-      label: "text-emerald-800",
-      themeBox: "border-emerald-100 bg-emerald-50/75",
+      rail: "bg-[#65775c]",
+      border: "border-[#cfdbc9]",
+      card: "bg-[#fbfaf1]",
+      header: "from-[#e8eddf] via-[#fff8ea] to-[#f4ead7]",
+      chip: "border-[#cfdbc9] bg-[#edf2e5] text-[#4f684f]",
+      marker: "marker:text-[#557052]",
+      label: "text-[#557052]",
+      themeBox: "border-[#cfdbc9] bg-[#edf2e5]/75",
     },
   };
 
@@ -1056,7 +1056,7 @@ const App = () => {
           onMouseLeave={hideGlossaryTooltip}
           onFocus={(event) => showGlossaryTooltip(entry, event)}
           onBlur={hideGlossaryTooltip}
-          className="glossary-term relative inline cursor-help rounded-[0.2rem] bg-teal-50/80 px-1 text-teal-950 outline-none ring-1 ring-teal-200/70 transition hover:bg-amber-100/80 hover:ring-amber-300 focus:bg-amber-100/80 focus:ring-2 focus:ring-amber-300"
+          className="glossary-term relative inline cursor-help rounded-[0.2rem] bg-[#f3ead6]/80 px-1 text-[#2c241c] outline-none ring-1 ring-[#d8cfb4] transition hover:bg-[#f7e7c2]/90 hover:ring-[#b97818] focus:bg-[#f7e7c2]/90 focus:ring-2 focus:ring-[#b97818]"
         >
           {part}
         </span>
@@ -1081,7 +1081,7 @@ const App = () => {
 
     return (
       <li key={itemIndex} className={`pl-1 marker:font-display marker:text-sm marker:font-bold ${theme.marker}`}>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {cardTitle !== "Scholarly Voices" && (source || reference || itemType) && (
             <div className="flex flex-wrap gap-2">
               {source && (
@@ -1101,7 +1101,7 @@ const App = () => {
               )}
             </div>
           )}
-          <p className="text-[16px] font-normal leading-8 text-slate-700">
+          <p className="text-[15.5px] font-normal leading-7 text-slate-700">
             {cardTitle === "Scholarly Voices" && source ? (
               <>
                 <span>{source} </span>
@@ -1119,13 +1119,15 @@ const App = () => {
   const renderLabeledSections = (sections, cardTitle) => {
     const theme = getCardTheme(cardTitle);
     return (
-    <div className={`overflow-hidden rounded-xl border bg-white/70 shadow-[0_10px_28px_rgba(15,23,42,0.04)] ${theme.border}`}>
+    <div className={`overflow-hidden rounded-2xl border bg-[#fffdf6]/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] ${theme.border}`}>
       {sections.map((section, sectionIndex) => (
         <div
           key={`${section.label}-${sectionIndex}`}
-          className={`grid gap-1.5 px-4 py-3 md:grid-cols-[8.5rem,1fr] md:gap-4 md:px-4 ${sectionIndex ? `border-t ${theme.border}` : ""}`}
+          className={`grid gap-2 px-4 py-3 md:grid-cols-[9.5rem,1fr] md:gap-4 md:px-5 ${sectionIndex ? `border-t ${theme.border}` : ""}`}
         >
-          <div className={`font-sans text-[10px] font-black uppercase tracking-[0.16em] md:pt-1 ${theme.label}`}>{section.label}</div>
+          <div className="md:pt-0.5">
+            <span className={`inline-flex rounded-full border px-2.5 py-1 font-sans text-[9px] font-black uppercase tracking-[0.14em] ${theme.chip}`}>{section.label}</span>
+          </div>
           <p className="text-[15px] font-normal leading-7 text-slate-700">{renderGlossaryText(section.content, `${cardTitle}-${sectionIndex}`)}</p>
         </div>
       ))}
@@ -1136,14 +1138,14 @@ const App = () => {
   const renderOutline = (outline, cardTitle) => {
     const theme = getCardTheme(cardTitle);
     return (
-    <div className="space-y-4">
-      <div className={`rounded-xl border p-4 ${theme.themeBox}`}>
+    <div className="space-y-3">
+      <div className={`rounded-2xl border p-4 ${theme.themeBox}`}>
         <div className={`mb-1 font-sans text-[10px] font-black uppercase tracking-[0.18em] ${theme.label}`}>Theme</div>
-        <p className="text-[17px] font-semibold leading-8 text-slate-800">{renderGlossaryText(outline.theme, `${cardTitle}-theme`)}</p>
+        <p className="text-[16px] font-semibold leading-7 text-slate-800">{renderGlossaryText(outline.theme, `${cardTitle}-theme`)}</p>
       </div>
       <ol className="space-y-2.5 pl-5">
         {outline.items.map((item, itemIndex) => (
-          <li key={`${item.label}-${itemIndex}`} className={`pl-1 text-[16px] font-normal leading-8 text-slate-700 marker:font-display marker:text-sm marker:font-bold ${theme.marker}`}>
+          <li key={`${item.label}-${itemIndex}`} className={`pl-1 text-[15.5px] font-normal leading-7 text-slate-700 marker:font-display marker:text-sm marker:font-bold ${theme.marker}`}>
             <span>{renderGlossaryText(item.label, `${cardTitle}-outline-${itemIndex}`)}</span>{" "}
             <span className={`font-sans text-xs font-black tracking-[0.08em] ${theme.label}`}>({item.range})</span>
           </li>
@@ -1166,17 +1168,17 @@ const App = () => {
     const themeLine = lines.find((line) => /^Theme:/i.test(line));
     const outlineLines = lines.filter((line) => !/^Theme:/i.test(line));
     const levelClasses = {
-      0: "mt-2.5 pl-0 text-[16px] font-medium leading-7 text-slate-800",
-      1: "mt-1.5 pl-6 text-[15px] font-normal leading-7 text-slate-700",
-      2: "mt-1 pl-10 text-[14px] font-normal leading-6 text-slate-600",
+      0: "mt-2 pl-0 text-[15.5px] font-medium leading-7 text-slate-800",
+      1: "mt-1 pl-6 text-[14.5px] font-normal leading-7 text-slate-700",
+      2: "mt-0.5 pl-10 text-[13.5px] font-normal leading-6 text-slate-600",
     };
 
     return (
       <div className="space-y-3">
         {themeLine && (
-          <div className={`rounded-xl border p-3.5 ${theme.themeBox}`}>
+          <div className={`rounded-2xl border p-3.5 ${theme.themeBox}`}>
             <div className={`mb-1 font-sans text-[10px] font-black uppercase tracking-[0.18em] ${theme.label}`}>Theme</div>
-            <p className="text-[16px] font-semibold leading-7 text-slate-800">{renderGlossaryText(themeLine.replace(/^Theme:\s*/i, ""), `${cardTitle}-theme-line`)}</p>
+            <p className="text-[15.5px] font-semibold leading-7 text-slate-800">{renderGlossaryText(themeLine.replace(/^Theme:\s*/i, ""), `${cardTitle}-theme-line`)}</p>
           </div>
         )}
         <div className="space-y-0">
@@ -1209,14 +1211,14 @@ const App = () => {
 
     if (Array.isArray(card.items)) {
       if (numberedCards.has(card.title)) {
-        return <ol className="list-decimal space-y-3.5 pl-5">{card.items.map((item, itemIndex) => renderNumberedItem(item, itemIndex, card.title))}</ol>;
+        return <ol className="list-decimal space-y-3 pl-5">{card.items.map((item, itemIndex) => renderNumberedItem(item, itemIndex, card.title))}</ol>;
       }
 
       const theme = getCardTheme(card.title);
       return (
-        <ul className="list-disc space-y-3.5 pl-5">
+        <ul className="list-disc space-y-3 pl-5">
           {card.items.map((item, itemIndex) => (
-            <li key={itemIndex} className={`pl-1 text-[16px] font-normal leading-8 text-slate-700 ${theme.marker}`}>{renderGlossaryText(item, `${card.title}-item-${itemIndex}`)}</li>
+            <li key={itemIndex} className={`pl-1 text-[15.5px] font-normal leading-7 text-slate-700 ${theme.marker}`}>{renderGlossaryText(item, `${card.title}-item-${itemIndex}`)}</li>
           ))}
         </ul>
       );
@@ -1227,9 +1229,9 @@ const App = () => {
       const clean = line.trim();
       if (!clean) return null;
       if (clean.startsWith("•") || clean.startsWith("-")) {
-        return <li key={lineIndex} className={`mb-3 ml-5 list-disc pl-1 text-[16px] font-normal leading-8 text-slate-700 ${theme.marker}`}>{renderGlossaryText(clean.replace(/^[•-]\s*/, ""), `${card.title}-bullet-${lineIndex}`)}</li>;
+        return <li key={lineIndex} className={`mb-2.5 ml-5 list-disc pl-1 text-[15.5px] font-normal leading-7 text-slate-700 ${theme.marker}`}>{renderGlossaryText(clean.replace(/^[•-]\s*/, ""), `${card.title}-bullet-${lineIndex}`)}</li>;
       }
-      return <p key={lineIndex} className="mb-4 text-[16px] font-normal leading-8 text-slate-700 last:mb-0">{renderGlossaryText(clean, `${card.title}-paragraph-${lineIndex}`)}</p>;
+      return <p key={lineIndex} className="mb-3.5 text-[15.5px] font-normal leading-7 text-slate-700 last:mb-0">{renderGlossaryText(clean, `${card.title}-paragraph-${lineIndex}`)}</p>;
     });
   };
 
@@ -1264,90 +1266,90 @@ const App = () => {
       : "pointer-events-none translate-y-8 opacity-0 blur-sm";
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[linear-gradient(135deg,#f8fdff_0%,#effcf7_42%,#fff8df_100%)] font-sans text-slate-950">
-      <nav className="sticky top-0 z-50 shrink-0 border-b border-white/80 bg-white/80 shadow-[0_10px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div className="flex items-center justify-between gap-4">
-            <button className="flex items-center gap-3 text-left" onClick={() => scrollJump("intro")}>
-              <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-teal-950 via-sky-800 to-amber-300 text-white shadow-[0_14px_28px_rgba(15,23,42,0.18)] ring-1 ring-white/70">
-                <span className="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.35),transparent_30%)]" />
-                <BookOpen size={22} strokeWidth={2.5} className="relative z-10" />
-                <span className="absolute bottom-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white/92 text-teal-800 shadow-sm">
-                  <Cross size={10} strokeWidth={3} />
-                </span>
-              </span>
-              <span className="leading-tight">
-                <span className="font-display block text-xl font-bold tracking-tight text-slate-950">Psalms Atlas</span>
-                <span className="hidden text-xs font-black uppercase tracking-[0.16em] text-teal-700 sm:block">Study reader</span>
-              </span>
-            </button>
-            <button onClick={() => scrollJump("deep-dive")} className="rounded-md bg-slate-950 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-teal-700 lg:hidden">Deep Dive</button>
-          </div>
-          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar">
+    <div className="atlas-page font-sans">
+      <div className="atlas-content">
+        <nav className="atlas-top-strip">
+          <button className="atlas-brand-button text-left" onClick={() => scrollJump("intro")} aria-label="Psalms Companion home">
+            <span className="atlas-logo-mark" aria-hidden="true">
+              <svg viewBox="0 0 64 64" role="img">
+                <circle cx="32" cy="32" r="29" fill="url(#brandMarkGlow)" />
+                <path d="M18 22.5c5.4-2.2 10.3-.9 14 3.8 3.7-4.7 8.6-6 14-3.8v24.2c-5.4-2.2-10.3-.9-14 3.8-3.7-4.7-8.6-6-14-3.8V22.5Z" fill="none" stroke="#fff3cf" strokeWidth="3.6" strokeLinejoin="round" />
+                <path d="M32 26.3v24.2" stroke="#fff3cf" strokeWidth="3" strokeLinecap="round" />
+                <path d="M20.5 18.2c3.5-3.1 7.6-4.7 11.5-4.7s8 1.6 11.5 4.7" fill="none" stroke="#c89335" strokeWidth="2.2" strokeLinecap="round" opacity="0.9" />
+                <defs>
+                  <radialGradient id="brandMarkGlow" cx="30%" cy="20%" r="80%">
+                    <stop offset="0%" stopColor="#6f7d60" />
+                    <stop offset="48%" stopColor="#26241c" />
+                    <stop offset="100%" stopColor="#b97818" />
+                  </radialGradient>
+                </defs>
+              </svg>
+            </span>
+            <span className="atlas-brand-title">Psalms Companion</span>
+          </button>
+          <div className="atlas-top-nav no-scrollbar" aria-label="Main navigation">
             {navItems.map(([id, label]) => (
-              <button key={id} onClick={() => scrollJump(id)} className="shrink-0 rounded-md px-3 py-2 text-xs font-black uppercase tracking-[0.12em] text-slate-500 transition hover:-translate-y-0.5 hover:bg-teal-50 hover:text-teal-800">
+              <button key={id} onClick={() => scrollJump(id)}>
                 {label}
               </button>
             ))}
           </div>
-          <button onClick={() => scrollJump("deep-dive")} className="hidden rounded-md bg-slate-950 px-5 py-2.5 text-xs font-black uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(15,23,42,0.18)] transition hover:-translate-y-0.5 hover:bg-teal-700 lg:block">Deep Dive</button>
-        </div>
-      </nav>
+          <button onClick={() => scrollJump("deep-dive")} className="atlas-dark-button">Deep Dive</button>
+        </nav>
 
-      <main id="main-scroller" className="relative flex-1 overflow-y-auto scroll-smooth custom-scrollbar">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_20%_0%,rgba(45,212,191,0.2),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(251,191,36,0.2),transparent_34%)]" />
-        <div className="relative mx-auto max-w-7xl space-y-20 px-4 pb-24 pt-8 lg:px-8">
+        <main id="main-scroller" className="atlas-main custom-scrollbar">
+          <div className="relative">
           <section id="intro" className="relative scroll-mt-28">
             <div className="relative min-h-[260vh]">
-              <div className="sticky top-6 z-10 overflow-hidden rounded-lg border border-white/80 bg-white/90 shadow-[0_24px_80px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(20,184,166,0.18),transparent_34%),radial-gradient(circle_at_86%_84%,rgba(251,191,36,0.18),transparent_32%)]" />
+              <div className="sticky top-6 z-10 overflow-hidden rounded-lg border border-[#e5d8c2] bg-[rgba(255,248,234,0.88)] shadow-[0_24px_80px_rgba(45,35,24,0.12)] backdrop-blur-xl">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(101,119,92,0.1),transparent_34%),radial-gradient(circle_at_86%_84%,rgba(185,120,24,0.13),transparent_32%)]" />
                 <div className="pointer-events-none absolute -right-28 -top-20 h-[34rem] w-[34rem] opacity-35 md:opacity-45">
                   <svg className="h-full w-full" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                     <defs>
                       <linearGradient id="introSky" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#e0fbff" />
-                        <stop offset="52%" stopColor="#ecfdf5" />
-                        <stop offset="100%" stopColor="#fff4cf" />
+                        <stop offset="0%" stopColor="#fff8ea" />
+                        <stop offset="52%" stopColor="#f5ead5" />
+                        <stop offset="100%" stopColor="#e6cfaa" />
                       </linearGradient>
-                      <linearGradient id="introTeal" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#5eead4" stopOpacity="0.85" />
-                        <stop offset="100%" stopColor="#0f766e" stopOpacity="0.48" />
+                      <linearGradient id="introSage" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#d8d2b3" stopOpacity="0.74" />
+                        <stop offset="100%" stopColor="#65775c" stopOpacity="0.3" />
                       </linearGradient>
                       <linearGradient id="introGold" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#fde68a" />
-                        <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.55" />
+                        <stop offset="0%" stopColor="#ecd08a" stopOpacity="0.68" />
+                        <stop offset="100%" stopColor="#b97818" stopOpacity="0.34" />
                       </linearGradient>
-                      <linearGradient id="introBlue" x1="0" y1="1" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#bae6fd" />
-                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.62" />
+                      <linearGradient id="introIvory" x1="0" y1="1" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#f6ead8" />
+                        <stop offset="100%" stopColor="#d8c2ad" stopOpacity="0.44" />
                       </linearGradient>
                     </defs>
                     <rect width="900" height="900" fill="url(#introSky)" />
-                    <g stroke="#ffffff" strokeWidth="14" strokeLinejoin="round" opacity="0.9">
-                      <path d="M-80 90 180-40 330 190 60 330Z" fill="url(#introBlue)" />
-                      <path d="M60 330 330 190 440 450 155 560Z" fill="#d9f99d" opacity="0.72" />
-                      <path d="M330 190 610 30 735 330 440 450Z" fill="url(#introTeal)" />
-                      <path d="M610 30 980-40 880 310 735 330Z" fill="#bae6fd" opacity="0.74" />
+                    <g stroke="#fff4df" strokeWidth="14" strokeLinejoin="round" opacity="0.78">
+                      <path d="M-80 90 180-40 330 190 60 330Z" fill="url(#introIvory)" />
+                      <path d="M60 330 330 190 440 450 155 560Z" fill="#d9c89d" opacity="0.48" />
+                      <path d="M330 190 610 30 735 330 440 450Z" fill="url(#introSage)" />
+                      <path d="M610 30 980-40 880 310 735 330Z" fill="#f1e4cf" opacity="0.58" />
                       <path d="M735 330 880 310 1000 520 820 670Z" fill="url(#introGold)" />
-                      <path d="M440 450 735 330 820 670 500 720Z" fill="#ccfbf1" opacity="0.84" />
-                      <path d="M155 560 440 450 500 720 190 940Z" fill="#fef3c7" opacity="0.88" />
-                      <path d="M500 720 820 670 980 950 420 980Z" fill="#dcfce7" opacity="0.86" />
+                      <path d="M440 450 735 330 820 670 500 720Z" fill="#cdb79a" opacity="0.42" />
+                      <path d="M155 560 440 450 500 720 190 940Z" fill="#f1dfb5" opacity="0.62" />
+                      <path d="M500 720 820 670 980 950 420 980Z" fill="#eadbc6" opacity="0.72" />
                     </g>
-                    <rect width="900" height="900" fill="#ffffff" opacity="0.34" />
+                    <rect width="900" height="900" fill="#fff8ea" opacity="0.24" />
                   </svg>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/94 to-white/74" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#fff8ea] via-[#fff8ea]/92 to-[#f3ead6]/70" />
 
                 <div className="relative z-10 flex min-h-[calc(100vh-3rem)] flex-col justify-center p-7 lg:p-14">
                   <div className="mx-auto max-w-4xl text-center">
                     <div className={`transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(0)}`}>
-                      <h1 className="font-display text-4xl font-bold leading-[1.02] tracking-tight text-slate-950 sm:text-5xl lg:text-[4.4rem]">
+                      <h1 className="font-display text-[clamp(2.45rem,5vw,4.05rem)] font-bold leading-[1.04] tracking-tight text-slate-950">
                         {introMoments[0].title}
                       </h1>
                     </div>
 
                     <div className={`mx-auto mt-10 max-w-3xl transition-all delay-100 duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(1)}`}>
-                      <h2 className="font-display text-3xl font-bold tracking-tight text-teal-800 lg:text-4xl">
+                      <h2 className="font-display text-3xl font-bold tracking-tight text-[#6b5a35] lg:text-4xl">
                         {introMoments[1].title}
                       </h2>
                       <p className="mt-4 text-[19px] font-medium leading-9 text-slate-700 lg:text-[21px] lg:leading-10">
@@ -1364,17 +1366,17 @@ const App = () => {
                       </p>
                       <button
                         onClick={() => scrollJump("finder")}
-                        className="mt-8 rounded-md bg-slate-950 px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-[0_16px_34px_rgba(15,23,42,0.2)] transition hover:-translate-y-0.5 hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-200"
+                        className="mt-8 rounded-md bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-[0_16px_34px_rgba(45,35,24,0.22)] transition hover:-translate-y-0.5 hover:bg-[#5b3a25] focus:outline-none focus:ring-4 focus:ring-[#ecd08a]/45"
                       >
                         Explore Psalms
                       </button>
                     </div>
                   </div>
                   <div className={`pointer-events-none absolute left-1/2 top-[72%] flex -translate-x-1/2 flex-col items-center gap-3 text-center transition-all duration-500 sm:top-[70%] ${visibleIntroSteps.includes(2) ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}>
-                    <span className="rounded-full border border-teal-100 bg-white/90 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.18em] text-teal-800 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur">
+                    <span className="rounded-full border border-[#d8cfb4] bg-[#fff8ea]/90 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.18em] text-[#6b5a35] shadow-[0_12px_30px_rgba(45,35,24,0.08)] backdrop-blur">
                       Scroll down to keep reading
                     </span>
-                    <ChevronRight size={22} className="rotate-90 text-teal-700" aria-hidden="true" />
+                    <ChevronRight size={22} className="rotate-90 text-[#b97818]" aria-hidden="true" />
                   </div>
                 </div>
               </div>
@@ -1394,11 +1396,11 @@ const App = () => {
             </div>
           </section>
 
-          <section id="finder" className="scroll-mt-28">
-            <div className="overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/88 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.08)] backdrop-blur lg:p-7">
+          <section id="finder" className="atlas-section atlas-shell scroll-mt-28">
+            <div className="atlas-paper-card p-5 lg:p-7">
               <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg border border-teal-100 bg-teal-50 text-teal-700 shadow-sm">
+                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg border border-[#d8cfb4] bg-[#f3ead6] text-[#8a5614] shadow-sm">
                     <Search size={22} />
                   </div>
                   <h2 className="font-display text-3xl font-bold tracking-tight text-slate-950 lg:text-5xl">Psalm Finder</h2>
@@ -1406,21 +1408,21 @@ const App = () => {
                     Search by number, theme, author, source, cross-reference, or a word that names what you are carrying.
                   </p>
                 </div>
-                <div className="rounded-lg border border-amber-100 bg-amber-50/70 px-4 py-3 text-sm font-bold leading-6 text-amber-900">
+                <div className="rounded-lg border border-[#e5d1a4] bg-[#f7e7c2]/70 px-4 py-3 text-sm font-bold leading-6 text-[#7a4b14]">
                   {selectedPathway ? selectedPathway.title : selectedFilter ? `Filtering by ${selectedFilter.label}` : finderQuery ? `Searching for "${finderQuery}"` : "Suggested starting points"}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr,0.9fr]">
-                <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-4">
+              <div className="atlas-finder-panel">
+                <div className="atlas-finder-main p-4">
                   <div className="relative">
-                    <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-teal-600" />
+                    <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8a5614]" />
                     <input
                       type="search"
                       value={finderQuery}
                       onChange={(event) => handleFinderQueryChange(event.target.value)}
                       placeholder="Try 23, forgiveness, Romans 4, Keller, messianic..."
-                      className="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base font-bold text-slate-900 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-teal-300 focus:ring-4 focus:ring-teal-100"
+                      className="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base font-bold text-slate-900 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-[#b97818] focus:ring-4 focus:ring-[#ecd08a]/35"
                     />
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -1432,8 +1434,8 @@ const App = () => {
                           onClick={() => handleQuickFilter(filter.id)}
                           className={`rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em] transition hover:-translate-y-0.5 ${
                             isActive
-                              ? "border-teal-300 bg-teal-600 text-white shadow-[0_10px_24px_rgba(13,148,136,0.22)]"
-                              : "border-teal-100 bg-white text-slate-600 hover:border-teal-300 hover:text-teal-800"
+                              ? "border-[#b97818] bg-[#b97818] text-white shadow-[0_10px_24px_rgba(185,120,24,0.22)]"
+                              : "border-[#d8cfb4] bg-white text-[#6f675d] hover:border-[#b97818] hover:text-[#8a5614]"
                           }`}
                         >
                           {filter.label}
@@ -1443,8 +1445,8 @@ const App = () => {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-teal-100 bg-gradient-to-br from-teal-50/80 via-white to-amber-50/70 p-4">
-                  <div className="mb-3 flex items-center gap-2 text-teal-800">
+                <div className="atlas-finder-side p-4">
+                  <div className="mb-3 flex items-center gap-2 text-[#8a5614]">
                     <Flame size={17} />
                     <h3 className="text-[11px] font-black uppercase tracking-[0.16em]">Theme Pathways</h3>
                   </div>
@@ -1457,8 +1459,8 @@ const App = () => {
                           onClick={() => handlePathway(pathway.id)}
                           className={`rounded-lg border p-3 text-left transition hover:-translate-y-0.5 ${
                             isActive
-                              ? "border-teal-300 bg-white shadow-[0_14px_30px_rgba(13,148,136,0.16)]"
-                              : "border-white/80 bg-white/70 hover:border-teal-200 hover:bg-white"
+                              ? "border-[#b97818] bg-white shadow-[0_14px_30px_rgba(185,120,24,0.16)]"
+                              : "border-white/80 bg-white/70 hover:border-[#d8cfb4] hover:bg-white"
                           }`}
                         >
                           <span className="block text-sm font-black leading-5 text-slate-900">{pathway.title}</span>
@@ -1483,7 +1485,7 @@ const App = () => {
                         setActivePathway(null);
                         resetFinderList();
                       }}
-                      className="self-start rounded-md border border-slate-200 bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-slate-500 transition hover:border-teal-200 hover:text-teal-700 sm:self-auto"
+                      className="self-start rounded-md border border-slate-200 bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-slate-500 transition hover:border-[#d8cfb4] hover:text-[#8a5614] sm:self-auto"
                     >
                       Clear Finder
                     </button>
@@ -1503,14 +1505,14 @@ const App = () => {
                             <button
                               aria-label={`Study Psalm ${result.psalm}`}
                               onClick={() => loadPsalmBrief(result.psalm)}
-                              className="rounded-md bg-slate-950 px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-sm transition hover:bg-teal-700"
+                              className="rounded-md bg-slate-950 px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-sm transition hover:bg-[#5b3a25]"
                             >
                               Study Psalm
                             </button>
                           </div>
                           <div className="mb-3 flex flex-wrap gap-2">
                             {(result.matchLabels.length ? result.matchLabels : result.summaryLabels).map((label) => (
-                              <span key={`${result.psalm}-${label}`} className="rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-teal-700">
+                              <span key={`${result.psalm}-${label}`} className="rounded-full border border-[#d8cfb4] bg-[#f3ead6] px-3 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-[#6f675d]">
                                 {label}
                               </span>
                             ))}
@@ -1526,7 +1528,7 @@ const App = () => {
                       <div className="mt-5 flex justify-center">
                         <button
                           onClick={() => setVisibleFinderCount((count) => count + 12)}
-                          className="rounded-md border border-teal-100 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.14em] text-teal-700 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:bg-teal-50"
+                          className="rounded-md border border-[#d8cfb4] bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#8a5614] shadow-sm transition hover:-translate-y-0.5 hover:border-[#b97818] hover:bg-[#f7e7c2]/55"
                         >
                           Show More
                         </button>
@@ -1542,9 +1544,10 @@ const App = () => {
             </div>
           </section>
 
-          <section id="canonical" className="scroll-mt-28">
-            <h2 className="font-display mb-5 flex items-center gap-3 text-xl font-bold text-slate-950">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-sky-100 bg-sky-50 shadow-sm"><Layers className="text-sky-700" size={22}/></div>
+          <section id="canonical" className="atlas-section atlas-band-dark scroll-mt-28">
+            <div className="atlas-shell">
+            <h2 className="font-display mb-5 flex items-center gap-3 text-4xl font-normal tracking-tight text-white lg:text-6xl">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#d2d6df] bg-[#eef0f2] shadow-sm"><Layers className="text-[#59687a]" size={22}/></div>
               Canonical Distribution
             </h2>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -1552,7 +1555,7 @@ const App = () => {
                 <div className="mb-6 min-h-[320px] flex-1"><canvas ref={canonicalChartRef}></canvas></div>
                 <div className="grid grid-cols-1 gap-3 border-t border-slate-100 pt-5 sm:grid-cols-5">
                   {canonicalBooksData.map(book => (
-                    <button key={book.id} className="group flex flex-col rounded-md border border-sky-100 bg-gradient-to-br from-white to-sky-50/50 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-sky-200 hover:bg-slate-950" onClick={() => setExplorerData({type: "canonical", data: book})}>
+                    <button key={book.id} className="group flex flex-col rounded-md border border-[#d8cfb4] bg-gradient-to-br from-white to-[#f3ead6]/60 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#b97818] hover:bg-slate-950" onClick={() => setExplorerData({type: "canonical", data: book})}>
                       <span className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-slate-500 transition-colors group-hover:text-white/60">{book.title}</span>
                       <span className="text-sm font-black text-slate-800 transition-colors group-hover:text-white">{book.role}</span>
                     </button>
@@ -1561,15 +1564,16 @@ const App = () => {
               </div>
               <div className="lg:col-span-5"><ExplorerCard data={explorerData.type === "canonical" ? explorerData.data : null} type="canonical" onPsalmClick={loadPsalmBrief} /></div>
             </div>
+            </div>
           </section>
 
-          <ProfileSection id="authors" icon={<Users className="text-emerald-700" size={22}/>} iconBg="border-emerald-100 bg-emerald-50" title="Authorial Profiles" chartRef={authChartRef} buttons={authorshipData} buttonLabel={(a) => a.name} onPick={(a) => setExplorerData({type: "auth", data: a})} cardType="auth" explorerData={explorerData} onPsalmClick={loadPsalmBrief} />
+          <ProfileSection id="authors" icon={<Users className="text-[#65775c]" size={22}/>} iconBg="border-[#cfdbc9] bg-[#edf2e5]" title="Authorial Profiles" chartRef={authChartRef} buttons={authorshipData} buttonLabel={(a) => a.name} onPick={(a) => setExplorerData({type: "auth", data: a})} cardType="auth" explorerData={explorerData} onPsalmClick={loadPsalmBrief} />
 
-          <ProfileSection id="taxonomy" icon={<Compass className="text-violet-700" size={22}/>} iconBg="border-violet-100 bg-violet-50" title="Literary Genres" chartRef={genreChartRef} buttons={genresData} buttonLabel={(g) => g.title} onPick={(g) => setExplorerData({type: "genre", data: g})} cardType="genre" explorerData={explorerData} onPsalmClick={loadPsalmBrief} />
+          <ProfileSection id="taxonomy" icon={<Compass className="text-[#9b5b3b]" size={22}/>} iconBg="border-[#e2c9b8] bg-[#f3e2d6]" title="Literary Genres" chartRef={genreChartRef} buttons={genresData} buttonLabel={(g) => g.title} onPick={(g) => setExplorerData({type: "genre", data: g})} cardType="genre" explorerData={explorerData} onPsalmClick={loadPsalmBrief} />
 
-          <section id="themes" className="scroll-mt-28">
-            <h2 className="font-display mb-5 flex items-center gap-3 text-xl font-bold text-slate-950">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-amber-100 bg-amber-50 shadow-sm"><LayoutGrid className="text-amber-700" size={22}/></div>
+          <section id="themes" className="atlas-section atlas-shell scroll-mt-28">
+            <h2 className="font-display mb-5 flex items-center gap-3 text-4xl font-normal tracking-tight text-slate-950 lg:text-6xl">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5d1a4] bg-[#f7e7c2] shadow-sm"><LayoutGrid className="text-[#8a5614]" size={22}/></div>
               Theological Matrix
             </h2>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -1592,9 +1596,9 @@ const App = () => {
             </div>
           </section>
 
-          <section id="history" className="scroll-mt-28">
-            <h2 className="font-display mb-5 flex items-center gap-3 text-xl font-bold text-slate-950">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-amber-100 bg-amber-50 shadow-sm"><History className="text-amber-700" size={22}/></div>
+          <section id="history" className="atlas-section atlas-shell scroll-mt-28">
+            <h2 className="font-display mb-5 flex items-center gap-3 text-4xl font-normal tracking-tight text-slate-950 lg:text-6xl">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5d1a4] bg-[#f7e7c2] shadow-sm"><History className="text-[#8a5614]" size={22}/></div>
               History
             </h2>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -1602,7 +1606,7 @@ const App = () => {
                 <div className="mb-6 min-h-[320px] flex-1"><canvas ref={eraChartRef}></canvas></div>
                 <div className="grid grid-cols-1 gap-3 border-t border-slate-100 pt-5 sm:grid-cols-3">
                   {erasData.map(e => (
-                    <button key={e.id} className="group flex flex-col rounded-md border border-slate-100 bg-gradient-to-br from-white to-teal-50/50 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-teal-200 hover:bg-slate-950" onClick={() => setExplorerData({type: "era", data: e})}>
+                    <button key={e.id} className="group flex flex-col rounded-md border border-[#d8cfb4] bg-gradient-to-br from-white to-[#f3ead6]/60 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#b97818] hover:bg-slate-950" onClick={() => setExplorerData({type: "era", data: e})}>
                       <span className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-slate-500 transition-colors group-hover:text-white/60">{e.title}</span>
                       <span className="text-sm font-black text-slate-800 transition-colors group-hover:text-white">{e.years}</span>
                     </button>
@@ -1613,26 +1617,25 @@ const App = () => {
             </div>
           </section>
 
-          <section id="deep-dive" className="relative z-10 scroll-mt-28">
-            <div className="overflow-visible rounded-[1.5rem] border border-amber-100/80 bg-[#fbf4e6] bg-[radial-gradient(circle_at_10%_0%,rgba(20,184,166,0.16),transparent_32%),radial-gradient(circle_at_90%_5%,rgba(245,158,11,0.16),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.72),rgba(255,247,237,0.82))] p-3 shadow-[0_24px_70px_rgba(120,53,15,0.1)] backdrop-blur lg:p-7">
-              <div className="mx-auto max-w-4xl">
-                <div className="relative mb-5 overflow-hidden rounded-[1.1rem] border border-slate-900/10 bg-slate-950 p-5 text-white shadow-[0_18px_46px_rgba(15,23,42,0.18)]">
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(20,184,166,0.22),transparent_34%),linear-gradient(315deg,rgba(245,158,11,0.16),transparent_32%)]" />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-amber-300/70 to-transparent" />
-                  <div className="relative z-10 flex items-center justify-center gap-4 text-center">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[0.85rem] border border-white/15 bg-white/10 text-amber-200 shadow-inner">
+          <section id="deep-dive" className="atlas-section atlas-study-reader relative z-10 scroll-mt-28">
+            <div className="atlas-shell atlas-reader-shell">
+              <aside className="atlas-reader-aside">
+                <div className="relative mb-5 overflow-hidden rounded-[1.1rem] border border-white/10 bg-transparent p-0 text-white">
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(155,91,59,0.22),transparent_34%),linear-gradient(315deg,rgba(185,120,24,0.18),transparent_32%)]" />
+                  <div className="relative z-10 flex items-center gap-4 text-left">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[0.85rem] border border-white/15 bg-white/10 text-[#ecd08a] shadow-inner">
                       <BookOpen size={24} />
                     </div>
                     <div>
-                      <p className="mb-1 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-teal-200">Study Reader</p>
-                      <h2 className="font-reader text-3xl font-semibold tracking-tight text-white lg:text-5xl">Psalms Deep Dive</h2>
+                      <p className="mb-1 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-[#ecd08a]">Study Reader</p>
+                      <h2>Psalms Deep Dive</h2>
                     </div>
                   </div>
                 </div>
 
-                <div className="relative z-10 mb-5 flex flex-col gap-2 rounded-[1rem] border border-white/80 bg-white/70 p-2.5 shadow-[0_14px_36px_rgba(15,23,42,0.07)] sm:flex-row">
+                <div className="relative z-10 mb-5 flex flex-col gap-2 rounded-[1rem] border border-white/10 bg-white/10 p-2.5 shadow-inner">
                   <div className="relative flex-1">
-                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl font-black text-teal-500">#</span>
+                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl font-black text-[#ecd08a]">#</span>
                     <input
                       type="text"
                       inputMode="numeric"
@@ -1645,45 +1648,62 @@ const App = () => {
                           loadPsalmBrief();
                         }
                       }}
-                      className="w-full rounded-[0.85rem] border border-amber-100 bg-[#fffdf7] py-3 pl-11 pr-4 text-xl font-black text-slate-950 shadow-inner outline-none transition focus:border-teal-400 focus:ring-4 focus:ring-teal-100"
+                      className="w-full rounded-[0.85rem] border border-white/10 bg-white/10 py-3 pl-11 pr-4 text-xl font-black text-white shadow-inner outline-none transition placeholder:text-white/40 focus:border-[#ecd08a] focus:ring-4 focus:ring-[#ecd08a]/10"
                     />
                   </div>
-                  <button onClick={() => loadPsalmBrief()} className="rounded-[0.85rem] bg-slate-950 px-6 py-3 text-xs font-black uppercase tracking-[0.14em] text-white shadow-[0_14px_28px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-teal-700">Study Psalm</button>
+                  <button onClick={() => loadPsalmBrief()} className="atlas-gold-button w-full">Study Psalm</button>
                 </div>
 
-                {error && <div className="relative z-10 mb-5 rounded-[0.85rem] border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-900">{error}</div>}
+                {error && <div className="relative z-10 mb-5 rounded-[0.85rem] border border-[#e5d1a4] bg-[#f7e7c2] px-4 py-3 text-sm font-bold text-[#7a4b14]">{error}</div>}
 
                 {brief && (
-                  <div className="relative z-10">
-                    <div className="sticky top-3 z-30 mb-4 flex flex-wrap gap-2 rounded-[1rem] border border-white/80 bg-white/85 p-3 shadow-[0_14px_34px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+                    <div className="relative z-10 flex flex-col gap-2">
                       {deepDiveTocItems.map(([title, label]) => (
                         <button
                           aria-label={`Jump to ${title}`}
                           key={title}
                           onClick={() => scrollJump(cardAnchorId(title))}
-                          className="rounded-full border border-amber-100 bg-[#fffdf7] px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-slate-500 transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-50 hover:text-teal-800"
+                          className="rounded-xl px-3 py-2 text-left text-[10px] font-black uppercase tracking-[0.12em] text-white/65 transition hover:bg-[#ecd08a] hover:text-slate-950"
                         >
                           {label}
                         </button>
                       ))}
                     </div>
+                )}
+              </aside>
+
+              <div className="relative z-10">
+                {brief && (
                     <div className="grid grid-cols-1 gap-3.5">
                       {brief.cards.map((card, idx) => {
                         const theme = getCardTheme(card.title);
+                        const shortLabel = deepDiveTocItems.find(([title]) => title === card.title)?.[1] || "Study";
+                        const sectionNumber = String(idx + 1).padStart(2, "0");
                         return (
-                        <div id={cardAnchorId(card.title)} key={idx} className={`group relative scroll-mt-28 overflow-visible rounded-[1.15rem] border ${theme.border} ${theme.card} shadow-[0_14px_42px_rgba(15,23,42,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_52px_rgba(15,23,42,0.1)]`}>
-                          <div className={`absolute left-0 top-0 h-full w-1 rounded-l-[1.15rem] ${theme.rail}`} />
-                          <div className={`flex items-center gap-3 rounded-t-[1.15rem] border-b ${theme.border} bg-gradient-to-r ${theme.header} px-4 py-3 text-[11px] font-black uppercase tracking-[0.12em] text-slate-600`}>
-                            <div className={`rounded-lg border bg-white p-2 shadow-sm ${theme.border}`}>{cardIcons[card.title] || <Info size={20} className="text-teal-700"/>}</div> {card.title}
+                        <div id={cardAnchorId(card.title)} key={idx} className={`atlas-reader-card group relative scroll-mt-28 overflow-visible ${theme.border} ${theme.card} transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(45,35,24,0.14)]`}>
+                          <div className={`atlas-card-accent absolute left-0 top-0 z-[2] h-1.5 w-full ${theme.rail}`} />
+                          <div className="flex items-start justify-between gap-4 px-5 pb-3 pt-5 lg:px-6 lg:pt-6">
+                            <div className="flex items-start gap-3.5">
+                              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border bg-[#fffdf6]/90 shadow-[0_10px_22px_rgba(45,35,24,0.08)] ${theme.border}`}>
+                                {cardIcons[card.title] || <Info size={20} className="text-[#65775c]"/>}
+                              </div>
+                              <div>
+                                <p className={`mb-1 font-sans text-[10px] font-black uppercase tracking-[0.18em] ${theme.label}`}>Section {sectionNumber}</p>
+                                <h3 className="font-display text-[28px] font-normal leading-none tracking-[-0.035em] text-slate-950 lg:text-[34px]">{card.title}</h3>
+                              </div>
+                            </div>
+                            <span className={`hidden shrink-0 rounded-full border px-3 py-1.5 font-sans text-[9px] font-black uppercase tracking-[0.16em] sm:inline-flex ${theme.chip}`}>
+                              {shortLabel}
+                            </span>
                           </div>
-                          <div className={`font-reader whitespace-pre-wrap text-slate-700 ${card.title === "Brief Outline" ? "p-4 pl-6 lg:p-5 lg:pl-7" : "p-4 pl-6 lg:p-5 lg:pl-7"}`}>
+                          <div className={`mx-5 h-px bg-gradient-to-r from-transparent via-[#d8cfb4] to-transparent lg:mx-6`} />
+                          <div className="font-reader px-5 pb-5 pt-4 text-slate-700 lg:px-6 lg:pb-6 lg:pt-5">
                             {renderCardContent(card)}
                           </div>
                         </div>
                         );
                       })}
                     </div>
-                  </div>
                 )}
               </div>
             </div>
@@ -1701,17 +1721,18 @@ const App = () => {
             transform: glossaryTooltip.placement === "below" ? "translateX(-50%)" : "translate(-50%, -100%)",
           }}
         >
-          <span className="mb-1 block text-[11px] font-black uppercase tracking-[0.16em] text-teal-800">{glossaryTooltip.title}</span>
+          <span className="mb-1 block text-[11px] font-black uppercase tracking-[0.16em] text-[#8a5614]">{glossaryTooltip.title}</span>
           <span className="block text-sm font-medium leading-6">{glossaryTooltip.definition}</span>
         </div>
       )}
+      </div>
     </div>
   );
 };
 
 const ProfileSection = ({ id, icon, iconBg, title, chartRef, buttons, buttonLabel, onPick, cardType, explorerData, onPsalmClick }) => (
-  <section id={id} className="scroll-mt-28">
-    <h2 className="font-display mb-5 flex items-center gap-3 text-xl font-bold text-slate-950">
+  <section id={id} className="atlas-section atlas-shell scroll-mt-28">
+    <h2 className="font-display mb-5 flex items-center gap-3 text-4xl font-normal tracking-tight text-slate-950 lg:text-6xl">
       <div className={`flex h-10 w-10 items-center justify-center rounded-lg border shadow-sm ${iconBg}`}>{icon}</div>
       {title}
     </h2>
@@ -1720,7 +1741,7 @@ const ProfileSection = ({ id, icon, iconBg, title, chartRef, buttons, buttonLabe
         <div className="mb-6 min-h-[320px] flex-1"><canvas ref={chartRef}></canvas></div>
         <div className="flex flex-wrap justify-center gap-2 border-t border-slate-100 pt-5">
           {buttons.map((item) => (
-            <button key={item.id || item.title} onClick={() => onPick(item)} className="rounded-md border border-teal-100 bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.1em] text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:bg-teal-600 hover:text-white">{buttonLabel(item)}</button>
+            <button key={item.id || item.title} onClick={() => onPick(item)} className="rounded-md border border-[#d8cfb4] bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.1em] text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b97818] hover:bg-[#5b3a25] hover:text-white">{buttonLabel(item)}</button>
           ))}
         </div>
       </div>
@@ -1731,8 +1752,8 @@ const ProfileSection = ({ id, icon, iconBg, title, chartRef, buttons, buttonLabe
 
 const ExplorerCard = ({ data, type, onPsalmClick }) => {
   if (!data) return (
-    <div className="flex h-full min-h-[420px] flex-col items-center justify-center rounded-lg border border-dashed border-teal-200 bg-white/70 p-8 text-center shadow-sm backdrop-blur">
-      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-teal-100 bg-teal-50 text-teal-300">
+    <div className="atlas-paper-card flex h-full min-h-[420px] flex-col items-center justify-center border-dashed p-8 text-center">
+      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-[#d8cfb4] bg-[#f3ead6] text-[#b97818]">
         {type === "auth" ? <Users size={30}/> : type === "era" ? <History size={30}/> : type === "genre" ? <Compass size={30}/> : type === "canonical" ? <Layers size={30}/> : <LayoutGrid size={30}/>}
       </div>
       <h4 className="text-sm font-black uppercase tracking-[0.16em] text-slate-800">Selection Required</h4>
@@ -1742,15 +1763,15 @@ const ExplorerCard = ({ data, type, onPsalmClick }) => {
 
   const icons = { auth: <Users size={18}/>, era: <History size={18}/>, genre: <Compass size={18}/>, theme: <LayoutGrid size={18}/>, canonical: <Layers size={18}/> };
   const accentColors = {
-    auth: "border-teal-200 bg-teal-50 text-teal-700",
-    era: "border-sky-200 bg-sky-50 text-sky-700",
-    genre: "border-amber-200 bg-amber-50 text-amber-700",
-    theme: "border-amber-200 bg-amber-50 text-amber-700",
-    canonical: "border-sky-200 bg-sky-50 text-sky-700",
+    auth: "border-[#cfdbc9] bg-[#edf2e5] text-[#557052]",
+    era: "border-[#d2d6df] bg-[#eef0f2] text-[#59687a]",
+    genre: "border-[#e5d1a4] bg-[#f7e7c2] text-[#8a5614]",
+    theme: "border-[#e5d1a4] bg-[#f7e7c2] text-[#8a5614]",
+    canonical: "border-[#d2d6df] bg-[#eef0f2] text-[#59687a]",
   };
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-white/80 bg-white/90 p-7 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur">
+    <div className="atlas-paper-card relative flex h-full flex-col p-7">
       <div className="relative z-10 mb-7 border-b border-slate-100 pb-6">
         <h4 className="font-display mb-4 text-3xl font-bold leading-tight tracking-tight text-slate-950">{data.name || data.title}</h4>
         <div className={`inline-flex items-center gap-2 rounded-md border px-3 py-2 ${accentColors[type] || accentColors.theme}`}>
@@ -1759,10 +1780,10 @@ const ExplorerCard = ({ data, type, onPsalmClick }) => {
       </div>
       <p className="mb-8 flex-1 text-base font-medium italic leading-8 text-slate-600">"{data.bio || data.desc}"</p>
       <div className="mt-auto relative z-10">
-        <div className="mb-4 flex items-center gap-3 text-teal-600"><Scroll size={16}/><h5 className="text-[11px] font-black uppercase tracking-[0.16em]">Canonical Index</h5></div>
+        <div className="mb-4 flex items-center gap-3 text-[#8a5614]"><Scroll size={16}/><h5 className="text-[11px] font-black uppercase tracking-[0.16em]">Canonical Index</h5></div>
         <div className="custom-scrollbar flex max-h-[220px] flex-wrap gap-2 overflow-y-auto pr-2">
           {data.psalms.map(p => (
-            <button key={p} onClick={() => onPsalmClick(p)} className="rounded-md border border-teal-100 bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.08em] text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:bg-slate-950 hover:text-white">Ps {p}</button>
+            <button key={p} onClick={() => onPsalmClick(p)} className="rounded-md border border-[#d8cfb4] bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.08em] text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b97818] hover:bg-slate-950 hover:text-white">Ps {p}</button>
           ))}
         </div>
       </div>
