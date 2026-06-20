@@ -375,6 +375,43 @@ const normalizeFinderText = (value) =>
     .replace(/\s+/g, " ")
     .trim();
 
+const hiddenFinderSourceNames = [
+  "timothy keller",
+  "alec motyer",
+  "d martyn lloyd-jones",
+  "d martyn lloyd jones",
+  "martyn lloyd-jones",
+  "martyn lloyd jones",
+  "john stott",
+  "charles spurgeon",
+  "john calvin",
+  "derek kidner",
+  "matthew henry",
+  "alexander maclaren",
+  "franz delitzsch",
+  "h c leupold",
+  "h.c. leupold",
+  "martin luther",
+  "keil and delitzsch",
+  "j j stewart perowne",
+  "j.j. stewart perowne",
+  "joseph alexander",
+  "allen ross",
+  "walter brueggemann",
+  "robert alter",
+  "warren wiersbe",
+  "j a motyer",
+  "j.a. motyer",
+].map(normalizeFinderText);
+
+const removeFinderSourceNames = (text) => {
+  let cleaned = ` ${normalizeFinderText(text)} `;
+  hiddenFinderSourceNames.forEach((name) => {
+    if (name) cleaned = cleaned.replace(new RegExp(`\\b${escapeRegExp(name)}\\b`, "g"), " ");
+  });
+  return normalizeFinderText(cleaned);
+};
+
 const textIncludesFinderPhrase = (text, phrase) => {
   if (!phrase) return false;
   if (/\d/.test(phrase)) {
@@ -444,7 +481,7 @@ const collectCardText = (card) => {
   if (Array.isArray(card?.items)) {
     card.items.forEach((item) => {
       if (item && typeof item === "object") {
-        pieces.push(item.source, item.reference, item.type, item.text);
+        pieces.push(item.reference, item.type, item.text);
       } else {
         pieces.push(item);
       }
@@ -461,7 +498,7 @@ const deepDiveTocItems = [
   ["Historical Background", "Background"],
   ["Context Type", "Context"],
   ["Poetic Features", "Poetry"],
-  ["Scholarly Voices", "Voices"],
+  ["Insights", "Insights"],
   ["NT Cross-Reference Tracker", "NT"],
   ["Christ in the Old Testament", "Christ"],
   ["Brief Outline", "Outline"],
@@ -661,16 +698,6 @@ const App = () => {
       })),
     );
 
-    const extractSources = (briefData) => {
-      const sources = new Set();
-      (briefData?.cards || []).forEach((card) => {
-        (card.items || []).forEach((item) => {
-          if (item && typeof item === "object" && item.source) sources.add(item.source);
-        });
-      });
-      return Array.from(sources);
-    };
-
     return Array.from({ length: 150 }, (_, index) => {
       const psalm = index + 1;
       const briefData = psalmBriefs[psalm];
@@ -680,8 +707,7 @@ const App = () => {
       const themeGroups = Array.from(new Set(themeTerms.filter((term) => term.psalms.includes(psalm)).map((term) => term.category)));
       const era = erasData.find((item) => item.psalms.includes(psalm));
       const canonicalBook = canonicalBooksData.find((book) => book.psalms.includes(psalm));
-      const sources = extractSources(briefData);
-      const cardText = (briefData?.cards || []).map(collectCardText).join(" ");
+      const cardText = removeFinderSourceNames((briefData?.cards || []).map(collectCardText).join(" "));
       const metadataText = [
         `Psalm ${psalm}`,
         ...authors,
@@ -692,7 +718,6 @@ const App = () => {
         era?.years,
         canonicalBook?.title,
         canonicalBook?.role,
-        ...sources,
       ].join(" ");
       const searchText = normalizeFinderText(`${metadataText} ${cardText}`);
 
@@ -705,7 +730,6 @@ const App = () => {
         themeGroups,
         era: era?.title || "",
         canonical: canonicalBook ? `${canonicalBook.title} (${canonicalBook.role})` : "",
-        sources,
         metadataText: normalizeFinderText(metadataText),
         searchText,
         summaryLabels: [canonicalBook?.title, genres[0], themes[0] || authors[0]].filter(Boolean),
@@ -908,7 +932,7 @@ const App = () => {
     "Historical Background": <History size={20} className="text-[#65775c]"/>,
     "Context Type": <Compass size={20} className="text-[#59687a]"/>,
     "Poetic Features": <Feather size={20} className="text-[#b97818]"/>,
-    "Scholarly Voices": <ListChecks size={20} className="text-[#65775c]"/>,
+    "Insights": <ListChecks size={20} className="text-[#65775c]"/>,
     "NT Cross-Reference Tracker": <ArrowRightLeft size={20} className="text-[#59687a]"/>,
     "Christ in the Old Testament": <Cross size={20} className="text-[#59687a]"/>,
     "Brief Outline": <FileText size={20} className="text-[#b97818]"/>,
@@ -947,7 +971,7 @@ const App = () => {
       label: "text-[#9a6418]",
       themeBox: "border-[#e5d1a4] bg-[#f7e7c2]/75",
     },
-    "Scholarly Voices": {
+    "Insights": {
       rail: "bg-[#65775c]",
       border: "border-[#cfdbc9]",
       card: "bg-[#fbfaf1]",
@@ -1009,11 +1033,11 @@ const App = () => {
     },
   };
 
-  const fallbackCardTheme = cardThemes["Scholarly Voices"];
+  const fallbackCardTheme = cardThemes["Insights"];
   const getCardTheme = (title) => cardThemes[title] || fallbackCardTheme;
 
   const numberedCards = new Set([
-    "Scholarly Voices",
+    "Insights",
     "NT Cross-Reference Tracker",
     "Christ in the Old Testament",
   ]);
@@ -1064,12 +1088,6 @@ const App = () => {
     });
   };
 
-  const normalizeSourceLead = (value) =>
-    String(value || "").replace(
-      /^(Argues|Asserts|Centers|Continues|Contrasts|Describes|Draws|Emphasizes|Exposes|Finds|Focuses|Frames|Highlights|Maintains|Notes|Notices|Observes|Points out|Points|Presents|Presses|Reads|Remarks|Sees|Shows|Stresses|Suggests|Treats|Uses|Warns)\b/,
-      (match) => match.toLowerCase(),
-    );
-
   const renderNumberedItem = (item, itemIndex, cardTitle) => {
     const theme = getCardTheme(cardTitle);
     const isStructuredItem = item && typeof item === "object";
@@ -1077,12 +1095,12 @@ const App = () => {
     const source = String(isStructuredItem ? item.source || "" : "").trim();
     const reference = String(isStructuredItem ? item.reference || "" : "").trim();
     const itemType = String(isStructuredItem ? item.type || "" : "").trim();
-    const displayText = cardTitle === "Scholarly Voices" && source ? normalizeSourceLead(text) : text;
+    const displayText = text;
 
     return (
       <li key={itemIndex} className={`pl-1 marker:font-display marker:text-sm marker:font-bold ${theme.marker}`}>
         <div className="space-y-1.5">
-          {cardTitle !== "Scholarly Voices" && (source || reference || itemType) && (
+          {cardTitle !== "Insights" && (source || reference || itemType) && (
             <div className="flex flex-wrap gap-2">
               {source && (
                 <span className={`inline-flex rounded-full border px-3 py-1 font-sans text-[10px] font-black uppercase tracking-[0.14em] ${theme.chip}`}>
@@ -1102,14 +1120,7 @@ const App = () => {
             </div>
           )}
           <p className="text-[15.5px] font-normal leading-7 text-slate-700">
-            {cardTitle === "Scholarly Voices" && source ? (
-              <>
-                <span>{source} </span>
-                {renderGlossaryText(displayText, `${cardTitle}-${itemIndex}`)}
-              </>
-            ) : (
-              renderGlossaryText(displayText, `${cardTitle}-${itemIndex}`)
-            )}
+            {renderGlossaryText(displayText, `${cardTitle}-${itemIndex}`)}
           </p>
         </div>
       </li>
@@ -1421,7 +1432,7 @@ const App = () => {
                       type="search"
                       value={finderQuery}
                       onChange={(event) => handleFinderQueryChange(event.target.value)}
-                      placeholder="Try 23, forgiveness, Romans 4, Keller, messianic..."
+                      placeholder="Try 23, forgiveness, Romans 4, lament, messianic..."
                       className="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base font-bold text-slate-900 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-[#b97818] focus:ring-4 focus:ring-[#ecd08a]/35"
                     />
                   </div>
@@ -1709,7 +1720,6 @@ const App = () => {
             </div>
           </section>
         </div>
-        <div className="border-t border-white/80 bg-white/70 p-8 text-center text-[11px] font-black uppercase tracking-[0.22em] text-slate-400 backdrop-blur">Conservative Research Suite - 2026</div>
       </main>
       {glossaryTooltip && (
         <div
