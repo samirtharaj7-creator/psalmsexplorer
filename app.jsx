@@ -28,7 +28,7 @@ import {
   Feather,
 } from "lucide-react";
 import { Chart, registerables } from "chart.js";
-import { psalmBriefs } from "./psalmBriefs.js";
+import { psalmBriefs } from "./psalmBriefs.js?v=psalms-20260703";
 
 Chart.register(...registerables);
 Chart.defaults.color = "#64748b";
