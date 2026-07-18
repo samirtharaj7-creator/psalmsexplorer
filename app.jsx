@@ -1430,6 +1430,7 @@ const App = () => {
                     <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8a5614]" />
                     <input
                       type="search"
+                      aria-label="Search Psalms"
                       value={finderQuery}
                       onChange={(event) => handleFinderQueryChange(event.target.value)}
                       placeholder="Try 23, forgiveness, Romans 4, lament, messianic..."
@@ -1649,6 +1650,7 @@ const App = () => {
                     <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl font-black text-[#ecd08a]">#</span>
                     <input
                       type="text"
+                      aria-label="Psalm number to study"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={activePsalm}

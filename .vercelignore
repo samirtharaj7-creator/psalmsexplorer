@@ -1,6 +1,5 @@
 .source-cache
 .python-libs
-scripts
 server.mjs
 sourceCoverage.js
 customPsalmCards.js

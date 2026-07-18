@@ -1,0 +1,20 @@
+{
+  "name": "psalms-companion",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "build:js": "node scripts/build-app.mjs",
+    "build:css": "tailwindcss -c tailwind.config.cjs -i styles/tailwind.input.css -o tailwind.css --minify",
+    "build": "node scripts/build-app.mjs && tailwindcss -c tailwind.config.cjs -i styles/tailwind.input.css -o tailwind.css --minify",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate:production": "node scripts/validate-production.mjs",
+    "validate": "node scripts/validate-content.mjs && node scripts/validate-production.mjs",
+    "check": "node scripts/build-app.mjs && tailwindcss -c tailwind.config.cjs -i styles/tailwind.input.css -o tailwind.css --minify && node scripts/validate-content.mjs && node scripts/validate-production.mjs && node --check app.js && node --check psalmBriefs.js && node --check mbe-unified.js"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17",
+    "typescript": "6.0.3"
+  }
+}
