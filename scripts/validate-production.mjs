@@ -42,6 +42,30 @@ for (const label of ["Search Psalms", "Psalm number to study"]) {
   if (!builtApp.includes(`"aria-label": "${label}"`)) failures.push(`Built app is missing accessible name: ${label}.`);
 }
 
+const canvasTags = [...source.matchAll(/<canvas\b[^>]*>/g)].map(match => match[0]);
+if (canvasTags.length !== 3) failures.push(`Expected three decorative chart templates; found ${canvasTags.length}.`);
+canvasTags.forEach((tag, index) => {
+  if (!/aria-hidden="true"/.test(tag) || !/role="presentation"/.test(tag)) {
+    failures.push(`Chart canvas ${index + 1} is not marked as redundant presentation.`);
+  }
+});
+if (/onClick:\s*\(_,\s*els\)/.test(source)) failures.push("A mouse-only Chart.js click handler remains.");
+for (const snippet of [
+  'aria-pressed={isActive}',
+  'id="psalm-study-error" role="alert" aria-live="assertive"',
+  'aria-describedby={error ? "psalm-study-error" : undefined}',
+  'aria-invalid={Boolean(error)}',
+]) {
+  if (!source.includes(snippet)) failures.push(`Source is missing accessibility regression marker: ${snippet}`);
+}
+for (const snippet of [
+  '"aria-pressed": isActive',
+  'id: "psalm-study-error", role: "alert", "aria-live": "assertive"',
+  '"aria-describedby": error ? "psalm-study-error" : undefined',
+]) {
+  if (!builtApp.includes(snippet)) failures.push(`Built app is missing accessibility regression marker: ${snippet}`);
+}
+
 const expectedApp = compileApp();
 if (builtApp !== expectedApp) failures.push("app.js is stale; run the production build.");
 if (/<[A-Z][A-Za-z0-9]*[\s/>]/.test(builtApp) || /className=/.test(builtApp)) {

@@ -900,10 +900,10 @@ const App = () => {
       if (ref.current) charts.push(new Chart(ref.current, cfg));
     };
 
-    build(canonicalChartRef, { type: "bar", data: { labels: canonicalBooksData.map(book => book.title), datasets: [{ data: canonicalBooksData.map(book => book.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#2b2117"], borderRadius: 8 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "canonical", data: canonicalBooksData[els[0].index] }); }, scales: { x: { grid: { display: false } } } } });
-    build(authChartRef, { type: "doughnut", data: { labels: authorshipData.map(a => a.name), datasets: [{ data: authorshipData.map(a => a.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "auth", data: authorshipData[els[0].index] }); } } });
-    build(eraChartRef, { type: "bar", data: { labels: erasData.map(e => e.title), datasets: [{ data: erasData.map(e => e.psalms.length), backgroundColor: ["#65775c", "#b97818", "#59687a"], borderRadius: 8 }] }, options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "era", data: erasData[els[0].index] }); }, scales: { y: { grid: { display: false } } } } });
-    build(genreChartRef, { type: "doughnut", data: { labels: genresData.map(g => g.title), datasets: [{ data: genresData.map(g => g.psalms.length), backgroundColor: ["#b97818", "#65775c", "#59687a", "#9b5b3b", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } }, onClick: (_, els) => { if (els.length) setExplorerData({ type: "genre", data: genresData[els[0].index] }); } } });
+    build(canonicalChartRef, { type: "bar", data: { labels: canonicalBooksData.map(book => book.title), datasets: [{ data: canonicalBooksData.map(book => book.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#2b2117"], borderRadius: 8 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } } } } });
+    build(authChartRef, { type: "doughnut", data: { labels: authorshipData.map(a => a.name), datasets: [{ data: authorshipData.map(a => a.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } } } });
+    build(eraChartRef, { type: "bar", data: { labels: erasData.map(e => e.title), datasets: [{ data: erasData.map(e => e.psalms.length), backgroundColor: ["#65775c", "#b97818", "#59687a"], borderRadius: 8 }] }, options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false } } } } });
+    build(genreChartRef, { type: "doughnut", data: { labels: genresData.map(g => g.title), datasets: [{ data: genresData.map(g => g.psalms.length), backgroundColor: ["#b97818", "#65775c", "#59687a", "#9b5b3b", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } } } });
 
     return () => charts.forEach(c => c.destroy());
   }, []);
@@ -1279,7 +1279,7 @@ const App = () => {
   return (
     <div className="atlas-page font-sans">
       <div className="atlas-content">
-        <nav className="atlas-top-strip">
+        <header className="atlas-top-strip">
           <button className="atlas-brand-button text-left" onClick={() => scrollJump("intro")} aria-label="Psalms Companion home">
             <span className="atlas-logo-mark" aria-hidden="true">
               <svg viewBox="0 0 64 64" role="img">
@@ -1298,15 +1298,15 @@ const App = () => {
             </span>
             <span className="atlas-brand-title">Psalms Companion</span>
           </button>
-          <div className="atlas-top-nav no-scrollbar" aria-label="Main navigation">
+          <nav className="atlas-top-nav no-scrollbar" aria-label="Main navigation">
             {navItems.map(([id, label]) => (
               <button key={id} onClick={() => scrollJump(id)}>
                 {label}
               </button>
             ))}
-          </div>
+          </nav>
           <button onClick={() => scrollJump("deep-dive")} className="atlas-dark-button">Deep Dive</button>
-        </nav>
+        </header>
 
         <main id="main-scroller" className="atlas-main custom-scrollbar">
           <div className="relative">
@@ -1419,7 +1419,7 @@ const App = () => {
                     Search by number, theme, author, source, cross-reference, or a word that names what you are carrying.
                   </p>
                 </div>
-                <div className="rounded-lg border border-[#e5d1a4] bg-[#f7e7c2]/70 px-4 py-3 text-sm font-bold leading-6 text-[#7a4b14]">
+                <div aria-live="polite" aria-atomic="true" className="rounded-lg border border-[#e5d1a4] bg-[#f7e7c2]/70 px-4 py-3 text-sm font-bold leading-6 text-[#7a4b14]">
                   {selectedPathway ? selectedPathway.title : selectedFilter ? `Filtering by ${selectedFilter.label}` : finderQuery ? `Searching for "${finderQuery}"` : "Suggested starting points"}
                 </div>
               </div>
@@ -1444,6 +1444,7 @@ const App = () => {
                         <button
                           key={filter.id}
                           onClick={() => handleQuickFilter(filter.id)}
+                          aria-pressed={isActive}
                           className={`rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em] transition hover:-translate-y-0.5 ${
                             isActive
                               ? "border-[#b97818] bg-[#b97818] text-white shadow-[0_10px_24px_rgba(185,120,24,0.22)]"
@@ -1469,6 +1470,7 @@ const App = () => {
                         <button
                           key={pathway.id}
                           onClick={() => handlePathway(pathway.id)}
+                          aria-pressed={isActive}
                           className={`rounded-lg border p-3 text-left transition hover:-translate-y-0.5 ${
                             isActive
                               ? "border-[#b97818] bg-white shadow-[0_14px_30px_rgba(185,120,24,0.16)]"
@@ -1564,10 +1566,10 @@ const App = () => {
             </h2>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
               <div className="flex flex-col rounded-lg border border-white/80 bg-white/85 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur lg:col-span-7">
-                <div className="mb-6 min-h-[320px] flex-1"><canvas ref={canonicalChartRef}></canvas></div>
+                <div className="mb-6 min-h-[320px] flex-1"><canvas ref={canonicalChartRef} aria-hidden="true" role="presentation"></canvas></div>
                 <div className="grid grid-cols-1 gap-3 border-t border-slate-100 pt-5 sm:grid-cols-5">
                   {canonicalBooksData.map(book => (
-                    <button key={book.id} className="group flex flex-col rounded-md border border-[#d8cfb4] bg-gradient-to-br from-white to-[#f3ead6]/60 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#b97818] hover:bg-slate-950" onClick={() => setExplorerData({type: "canonical", data: book})}>
+                    <button key={book.id} aria-pressed={explorerData.type === "canonical" && explorerData.data?.id === book.id} className="group flex flex-col rounded-md border border-[#d8cfb4] bg-gradient-to-br from-white to-[#f3ead6]/60 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#b97818] hover:bg-slate-950" onClick={() => setExplorerData({type: "canonical", data: book})}>
                       <span className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-slate-500 transition-colors group-hover:text-white/60">{book.title}</span>
                       <span className="text-sm font-black text-slate-800 transition-colors group-hover:text-white">{book.role}</span>
                     </button>
@@ -1598,7 +1600,7 @@ const App = () => {
                     </div>
                     <div className="flex flex-wrap gap-3">
                       {cat.terms.map((t, ti) => (
-                        <button key={ti} onClick={() => setExplorerData({ type: "theme", data: { name: t.label, role: cat.group, bio: `A core concept emphasizing ${t.label} within the Psalter's theological structure.`, psalms: t.psalms } })} className="rounded-md border border-white/80 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.1em] shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-950 hover:text-white">{t.label}</button>
+                        <button key={ti} aria-pressed={explorerData.type === "theme" && explorerData.data?.name === t.label} onClick={() => setExplorerData({ type: "theme", data: { name: t.label, role: cat.group, bio: `A core concept emphasizing ${t.label} within the Psalter's theological structure.`, psalms: t.psalms } })} className="rounded-md border border-white/80 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.1em] shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-950 hover:text-white">{t.label}</button>
                       ))}
                     </div>
                   </div>
@@ -1615,10 +1617,10 @@ const App = () => {
             </h2>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
               <div className="flex flex-col rounded-lg border border-white/80 bg-white/85 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur lg:col-span-7">
-                <div className="mb-6 min-h-[320px] flex-1"><canvas ref={eraChartRef}></canvas></div>
+                <div className="mb-6 min-h-[320px] flex-1"><canvas ref={eraChartRef} aria-hidden="true" role="presentation"></canvas></div>
                 <div className="grid grid-cols-1 gap-3 border-t border-slate-100 pt-5 sm:grid-cols-3">
                   {erasData.map(e => (
-                    <button key={e.id} className="group flex flex-col rounded-md border border-[#d8cfb4] bg-gradient-to-br from-white to-[#f3ead6]/60 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#b97818] hover:bg-slate-950" onClick={() => setExplorerData({type: "era", data: e})}>
+                    <button key={e.id} aria-pressed={explorerData.type === "era" && explorerData.data?.id === e.id} className="group flex flex-col rounded-md border border-[#d8cfb4] bg-gradient-to-br from-white to-[#f3ead6]/60 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#b97818] hover:bg-slate-950" onClick={() => setExplorerData({type: "era", data: e})}>
                       <span className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-slate-500 transition-colors group-hover:text-white/60">{e.title}</span>
                       <span className="text-sm font-black text-slate-800 transition-colors group-hover:text-white">{e.years}</span>
                     </button>
@@ -1649,8 +1651,11 @@ const App = () => {
                   <div className="relative flex-1">
                     <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl font-black text-[#ecd08a]">#</span>
                     <input
+                      id="psalm-study-input"
                       type="text"
                       aria-label="Psalm number to study"
+                      aria-invalid={Boolean(error)}
+                      aria-describedby={error ? "psalm-study-error" : undefined}
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={activePsalm}
@@ -1667,7 +1672,7 @@ const App = () => {
                   <button onClick={() => loadPsalmBrief()} className="atlas-gold-button w-full">Study Psalm</button>
                 </div>
 
-                {error && <div className="relative z-10 mb-5 rounded-[0.85rem] border border-[#e5d1a4] bg-[#f7e7c2] px-4 py-3 text-sm font-bold text-[#7a4b14]">{error}</div>}
+                {error && <div id="psalm-study-error" role="alert" aria-live="assertive" className="relative z-10 mb-5 rounded-[0.85rem] border border-[#e5d1a4] bg-[#f7e7c2] px-4 py-3 text-sm font-bold text-[#7a4b14]">{error}</div>}
 
                 {brief && (
                     <div className="relative z-10 flex flex-col gap-2">
@@ -1750,10 +1755,10 @@ const ProfileSection = ({ id, icon, iconBg, title, chartRef, buttons, buttonLabe
     </h2>
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
       <div className="flex flex-col rounded-lg border border-white/80 bg-white/85 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur lg:col-span-7">
-        <div className="mb-6 min-h-[320px] flex-1"><canvas ref={chartRef}></canvas></div>
+        <div className="mb-6 min-h-[320px] flex-1"><canvas ref={chartRef} aria-hidden="true" role="presentation"></canvas></div>
         <div className="flex flex-wrap justify-center gap-2 border-t border-slate-100 pt-5">
           {buttons.map((item) => (
-            <button key={item.id || item.title} onClick={() => onPick(item)} className="rounded-md border border-[#d8cfb4] bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.1em] text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b97818] hover:bg-[#5b3a25] hover:text-white">{buttonLabel(item)}</button>
+            <button key={item.id || item.title} aria-pressed={explorerData.type === cardType && (item.id ? explorerData.data?.id === item.id : explorerData.data?.title === item.title)} onClick={() => onPick(item)} className="rounded-md border border-[#d8cfb4] bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.1em] text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b97818] hover:bg-[#5b3a25] hover:text-white">{buttonLabel(item)}</button>
           ))}
         </div>
       </div>
