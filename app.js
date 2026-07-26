@@ -822,7 +822,7 @@ const App = () => {
                 return Array.from(next);
             });
         }, {
-            root: document.getElementById("main-scroller"),
+            root: null,
             rootMargin: "-12% 0px -28% 0px",
             threshold: 0.42,
         });
