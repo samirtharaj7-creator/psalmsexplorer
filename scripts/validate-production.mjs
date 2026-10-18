@@ -15,6 +15,7 @@ const html = read("index.html");
 const source = read("app.jsx");
 const builtApp = read("app.js");
 const builtCss = read("tailwind.css");
+const brandCss = read("brand-design.css");
 
 for (const [label, pattern] of [
   ["Tailwind Play CDN", /cdn\.tailwindcss\.com/i],
@@ -28,8 +29,11 @@ for (const [label, pattern] of [
 if (!/<link[^>]+href=["']\/tailwind\.css\?v=psalms-20260718-1["']/i.test(html)) {
   failures.push("index.html does not load the compiled Tailwind stylesheet.");
 }
-if (!/<script[^>]+type=["']module["'][^>]+src=["']\/app\.js\?v=psalms-20260718-1["']/i.test(html)) {
+if (!/<script[^>]+type=["']module["'][^>]+src=["']\/app\.js\?v=psalms-brand-4["']/i.test(html)) {
   failures.push("index.html does not load the precompiled JavaScript module.");
+}
+if (!/<link[^>]+href=["']\/brand-design\.css\?v=psalms-brand-4["']/i.test(html) || !brandCss.includes(".finder-result")) {
+  failures.push("index.html does not load the brand redesign stylesheet.");
 }
 
 const inputTags = [...source.matchAll(/<input\b[\s\S]*?\/>/g)].map((match) => match[0]);

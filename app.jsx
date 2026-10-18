@@ -28,11 +28,11 @@ import {
   Feather,
 } from "lucide-react";
 import { Chart, registerables } from "chart.js";
-import { psalmBriefs } from "./psalmBriefs.js?v=psalms-20260703";
+import { psalmBriefs } from "./psalmBriefs.js?v=psalms-20261018-insights";
 
 Chart.register(...registerables);
-Chart.defaults.color = "#64748b";
-Chart.defaults.borderColor = "#dff4f6";
+Chart.defaults.color = "#59616c";
+Chart.defaults.borderColor = "#e2e3df";
 Chart.defaults.font.family = "'Inter', sans-serif";
 
 const glossaryEntries = [
@@ -573,6 +573,7 @@ const App = () => {
   const genreChartRef = useRef(null);
   const canonicalChartRef = useRef(null);
   const introStepRefs = useRef([]);
+  const finderResultsRef = useRef(null);
   const [visibleIntroSteps, setVisibleIntroSteps] = useState([0]);
   const [glossaryTooltip, setGlossaryTooltip] = useState(null);
 
@@ -835,7 +836,10 @@ const App = () => {
   const selectedPathway = themePathways.find((pathway) => pathway.id === activePathway);
   const selectedFilter = quickFilters.find((filter) => filter.id === finderFilter);
 
-  const resetFinderList = () => setVisibleFinderCount(12);
+  const resetFinderList = () => {
+    setVisibleFinderCount(12);
+    finderResultsRef.current?.scrollTo({ top: 0 });
+  };
 
   const handleFinderQueryChange = (value) => {
     setFinderQuery(value);
@@ -900,10 +904,10 @@ const App = () => {
       if (ref.current) charts.push(new Chart(ref.current, cfg));
     };
 
-    build(canonicalChartRef, { type: "bar", data: { labels: canonicalBooksData.map(book => book.title), datasets: [{ data: canonicalBooksData.map(book => book.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#2b2117"], borderRadius: 8 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } } } } });
-    build(authChartRef, { type: "doughnut", data: { labels: authorshipData.map(a => a.name), datasets: [{ data: authorshipData.map(a => a.psalms.length), backgroundColor: ["#65775c", "#b97818", "#9b5b3b", "#59687a", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } } } });
-    build(eraChartRef, { type: "bar", data: { labels: erasData.map(e => e.title), datasets: [{ data: erasData.map(e => e.psalms.length), backgroundColor: ["#65775c", "#b97818", "#59687a"], borderRadius: 8 }] }, options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false } } } } });
-    build(genreChartRef, { type: "doughnut", data: { labels: genresData.map(g => g.title), datasets: [{ data: genresData.map(g => g.psalms.length), backgroundColor: ["#b97818", "#65775c", "#59687a", "#9b5b3b", "#7c6a45", "#8f7350", "#3f4b3a", "#171512"], borderWidth: 4, borderColor: "#fff8ea" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } } } });
+    build(canonicalChartRef, { type: "bar", data: { labels: canonicalBooksData.map(book => book.title), datasets: [{ data: canonicalBooksData.map(book => book.psalms.length), backgroundColor: ["#b69554", "#c5a669", "#d0b987", "#d9c8a6", "#e4d7bf"], borderRadius: 2 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } } } } });
+    build(authChartRef, { type: "doughnut", data: { labels: authorshipData.map(a => a.name), datasets: [{ data: authorshipData.map(a => a.psalms.length), backgroundColor: ["#142239", "#b69554", "#718096", "#d4bf92", "#41516a", "#e2d8c2", "#8895a6", "#f0ebe1"], borderWidth: 3, borderColor: "#ffffff" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } } } });
+    build(eraChartRef, { type: "bar", data: { labels: erasData.map(e => e.title), datasets: [{ data: erasData.map(e => e.psalms.length), backgroundColor: ["#142239", "#b69554", "#718096"], borderRadius: 2 }] }, options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false } } } } });
+    build(genreChartRef, { type: "doughnut", data: { labels: genresData.map(g => g.title), datasets: [{ data: genresData.map(g => g.psalms.length), backgroundColor: ["#142239", "#b69554", "#718096", "#d4bf92", "#41516a", "#e2d8c2", "#8895a6", "#f0ebe1"], borderWidth: 3, borderColor: "#ffffff" }] }, options: { maintainAspectRatio: false, cutout: "75%", plugins: { legend: { display: false } } } });
 
     return () => charts.forEach(c => c.destroy());
   }, []);
@@ -1312,82 +1316,44 @@ const App = () => {
           <div className="relative">
           <section id="intro" className="relative scroll-mt-28">
             <div className="relative min-h-[260vh]">
-              <div className="sticky top-6 z-10 overflow-hidden rounded-lg border border-[#e5d8c2] bg-[rgba(255,248,234,0.88)] shadow-[0_24px_80px_rgba(45,35,24,0.12)] backdrop-blur-xl">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(101,119,92,0.1),transparent_34%),radial-gradient(circle_at_86%_84%,rgba(185,120,24,0.13),transparent_32%)]" />
-                <div className="pointer-events-none absolute -right-28 -top-20 h-[34rem] w-[34rem] opacity-35 md:opacity-45">
-                  <svg className="h-full w-full" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="introSky" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#fff8ea" />
-                        <stop offset="52%" stopColor="#f5ead5" />
-                        <stop offset="100%" stopColor="#e6cfaa" />
-                      </linearGradient>
-                      <linearGradient id="introSage" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#d8d2b3" stopOpacity="0.74" />
-                        <stop offset="100%" stopColor="#65775c" stopOpacity="0.3" />
-                      </linearGradient>
-                      <linearGradient id="introGold" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#ecd08a" stopOpacity="0.68" />
-                        <stop offset="100%" stopColor="#b97818" stopOpacity="0.34" />
-                      </linearGradient>
-                      <linearGradient id="introIvory" x1="0" y1="1" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#f6ead8" />
-                        <stop offset="100%" stopColor="#d8c2ad" stopOpacity="0.44" />
-                      </linearGradient>
-                    </defs>
-                    <rect width="900" height="900" fill="url(#introSky)" />
-                    <g stroke="#fff4df" strokeWidth="14" strokeLinejoin="round" opacity="0.78">
-                      <path d="M-80 90 180-40 330 190 60 330Z" fill="url(#introIvory)" />
-                      <path d="M60 330 330 190 440 450 155 560Z" fill="#d9c89d" opacity="0.48" />
-                      <path d="M330 190 610 30 735 330 440 450Z" fill="url(#introSage)" />
-                      <path d="M610 30 980-40 880 310 735 330Z" fill="#f1e4cf" opacity="0.58" />
-                      <path d="M735 330 880 310 1000 520 820 670Z" fill="url(#introGold)" />
-                      <path d="M440 450 735 330 820 670 500 720Z" fill="#cdb79a" opacity="0.42" />
-                      <path d="M155 560 440 450 500 720 190 940Z" fill="#f1dfb5" opacity="0.62" />
-                      <path d="M500 720 820 670 980 950 420 980Z" fill="#eadbc6" opacity="0.72" />
-                    </g>
-                    <rect width="900" height="900" fill="#fff8ea" opacity="0.24" />
-                  </svg>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#fff8ea] via-[#fff8ea]/92 to-[#f3ead6]/70" />
-
-                <div className="relative z-10 flex min-h-[calc(100vh-3rem)] flex-col justify-center p-7 lg:p-14">
-                  <div className="mx-auto max-w-4xl text-center">
+              <div className="intro-stage sticky top-0 z-10 overflow-hidden bg-white">
+                <div className="intro-stage-inner relative z-10 flex min-h-screen flex-col justify-center px-7 py-20 lg:px-[9%]">
+                  <div className="intro-copy max-w-4xl">
                     <div className={`transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(0)}`}>
-                      <h1 className="font-display text-[clamp(2.45rem,5vw,4.05rem)] font-bold leading-[1.04] tracking-tight text-slate-950">
+                      <h1 className="intro-question font-display">
                         {introMoments[0].title}
                       </h1>
                     </div>
 
-                    <div className={`mx-auto mt-10 max-w-3xl transition-all delay-100 duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(1)}`}>
-                      <h2 className="font-display text-3xl font-bold tracking-tight text-[#6b5a35] lg:text-4xl">
+                    <div className={`intro-second mt-10 transition-all delay-100 duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(1)}`}>
+                      <h2 className="font-display">
                         {introMoments[1].title}
                       </h2>
-                      <p className="mt-4 text-[19px] font-medium leading-9 text-slate-700 lg:text-[21px] lg:leading-10">
+                      <p className="mt-4">
                         {introMoments[1].body}
                       </p>
                     </div>
 
-                    <div className={`mx-auto mt-10 max-w-3xl transition-all delay-150 duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(2)}`}>
-                      <h2 className="font-display text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl">
+                    <div className={`intro-third mt-10 transition-all delay-150 duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 ${introRevealClass(2)}`}>
+                      <h2 className="font-display">
                         {introMoments[2].title}
                       </h2>
-                      <p className="mt-4 text-[19px] font-medium leading-9 text-slate-700 lg:text-[21px] lg:leading-10">
+                      <p className="mt-4">
                         {introMoments[2].body}
                       </p>
                       <button
                         onClick={() => scrollJump("finder")}
-                        className="mt-8 rounded-md bg-[#171512] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-[0_16px_34px_rgba(45,35,24,0.22)] transition hover:-translate-y-0.5 hover:bg-[#5b3a25] focus:outline-none focus:ring-4 focus:ring-[#ecd08a]/45"
+                        className="intro-explore mt-8"
                       >
                         Explore Psalms
                       </button>
                     </div>
                   </div>
-                  <div className={`pointer-events-none absolute left-1/2 top-[72%] flex -translate-x-1/2 flex-col items-center gap-3 text-center transition-all duration-500 sm:top-[70%] ${visibleIntroSteps.includes(2) ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}>
-                    <span className="rounded-full border border-[#d8cfb4] bg-[#fff8ea]/90 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.18em] text-[#6b5a35] shadow-[0_12px_30px_rgba(45,35,24,0.08)] backdrop-blur">
+                  <div className={`intro-scroll-cue pointer-events-none absolute flex items-center gap-3 transition-all duration-500 ${visibleIntroSteps.includes(2) ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}>
+                    <span>
                       Scroll down to keep reading
                     </span>
-                    <ChevronRight size={22} className="rotate-90 text-[#b97818]" aria-hidden="true" />
+                    <ChevronRight size={18} className="rotate-90" aria-hidden="true" />
                   </div>
                 </div>
               </div>
@@ -1433,7 +1399,7 @@ const App = () => {
                       aria-label="Search Psalms"
                       value={finderQuery}
                       onChange={(event) => handleFinderQueryChange(event.target.value)}
-                      placeholder="Try 23, forgiveness, Romans 4, lament, messianic..."
+                      placeholder="Psalm 23, forgiveness, lament..."
                       className="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base font-bold text-slate-900 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-[#b97818] focus:ring-4 focus:ring-[#ecd08a]/35"
                     />
                   </div>
@@ -1456,14 +1422,11 @@ const App = () => {
                       );
                     })}
                   </div>
-                </div>
-
-                <div className="atlas-finder-side p-4">
-                  <div className="mb-3 flex items-center gap-2 text-[#8a5614]">
+                  <div className="finder-pathways-heading flex items-center gap-2 text-[#8a5614]">
                     <Flame size={17} />
                     <h3 className="text-[11px] font-black uppercase tracking-[0.16em]">Theme Pathways</h3>
                   </div>
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <div className="finder-pathways grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {themePathways.map((pathway) => {
                       const isActive = activePathway === pathway.id;
                       return (
@@ -1484,11 +1447,9 @@ const App = () => {
                     })}
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-6 border-t border-slate-100 pt-5">
-                <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <h3 className="font-display text-xl font-bold text-slate-950">
+                <div ref={finderResultsRef} className="atlas-finder-side p-4" role="region" aria-label="Psalm search results" tabIndex={0}>
+                <div className="finder-results-heading mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <h3 aria-live="polite" className="font-display text-xl font-bold text-slate-950">
                     {finderResults.length ? `${finderResults.length} psalm${finderResults.length === 1 ? "" : "s"} found` : "No psalms found"}
                   </h3>
                   {(finderQuery || finderFilter || activePathway) && (
@@ -1508,32 +1469,24 @@ const App = () => {
 
                 {finderResults.length ? (
                   <>
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="finder-results">
                       {visibleFinderResults.map((result) => (
-                        <div key={result.psalm} className="group rounded-xl border border-white/80 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_20px_42px_rgba(15,23,42,0.1)]">
-                          <div className="mb-3 flex items-start justify-between gap-3">
-                            <div>
-                              <h4 className="font-display text-2xl font-bold tracking-tight text-slate-950">Psalm {result.psalm}</h4>
-                              <p className="mt-1 text-xs font-black uppercase tracking-[0.12em] text-slate-400">{result.canonical}</p>
+                        <div key={result.psalm} className="finder-result">
+                          <div className="finder-result-number">
+                            <h4>Psalm {result.psalm}</h4>
+                            <p>{result.canonical}</p>
+                          </div>
+                          <div className="finder-result-details">
+                            <p>{[result.authors[0], result.genres[0], result.themes[0]].filter(Boolean).join(" • ") || "Static study brief available"}</p>
+                            <div className="finder-result-tags">
+                              {(result.matchLabels.length ? result.matchLabels : result.summaryLabels).map((label) => (
+                                <span key={`${result.psalm}-${label}`}>{label}</span>
+                              ))}
                             </div>
-                            <button
-                              aria-label={`Study Psalm ${result.psalm}`}
-                              onClick={() => loadPsalmBrief(result.psalm)}
-                              className="rounded-md bg-slate-950 px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-sm transition hover:bg-[#5b3a25]"
-                            >
-                              Study Psalm
-                            </button>
                           </div>
-                          <div className="mb-3 flex flex-wrap gap-2">
-                            {(result.matchLabels.length ? result.matchLabels : result.summaryLabels).map((label) => (
-                              <span key={`${result.psalm}-${label}`} className="rounded-full border border-[#d8cfb4] bg-[#f3ead6] px-3 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-[#6f675d]">
-                                {label}
-                              </span>
-                            ))}
-                          </div>
-                          <p className="text-sm font-medium leading-6 text-slate-600">
-                            {[result.authors[0], result.genres[0], result.themes[0]].filter(Boolean).join(" • ") || "Static study brief available"}
-                          </p>
+                          <button aria-label={`Study Psalm ${result.psalm}`} onClick={() => loadPsalmBrief(result.psalm)} className="finder-result-action">
+                            Read study <ChevronRight size={15} aria-hidden="true" />
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -1550,10 +1503,11 @@ const App = () => {
                     )}
                   </>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center text-sm font-bold text-slate-500">
+                  <div className="finder-empty border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center text-sm font-bold text-slate-500">
                     Try a different word, source name, verse reference, or psalm number.
                   </div>
                 )}
+                </div>
               </div>
             </div>
           </section>
