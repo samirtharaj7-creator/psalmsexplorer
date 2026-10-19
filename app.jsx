@@ -1285,22 +1285,11 @@ const App = () => {
       <div className="atlas-content">
         <header className="atlas-top-strip">
           <button className="atlas-brand-button text-left" onClick={() => scrollJump("intro")} aria-label="Psalms Companion home">
-            <span className="atlas-logo-mark" aria-hidden="true">
-              <svg viewBox="0 0 64 64" role="img">
-                <circle cx="32" cy="32" r="29" fill="url(#brandMarkGlow)" />
-                <path d="M18 22.5c5.4-2.2 10.3-.9 14 3.8 3.7-4.7 8.6-6 14-3.8v24.2c-5.4-2.2-10.3-.9-14 3.8-3.7-4.7-8.6-6-14-3.8V22.5Z" fill="none" stroke="#fff3cf" strokeWidth="3.6" strokeLinejoin="round" />
-                <path d="M32 26.3v24.2" stroke="#fff3cf" strokeWidth="3" strokeLinecap="round" />
-                <path d="M20.5 18.2c3.5-3.1 7.6-4.7 11.5-4.7s8 1.6 11.5 4.7" fill="none" stroke="#c89335" strokeWidth="2.2" strokeLinecap="round" opacity="0.9" />
-                <defs>
-                  <radialGradient id="brandMarkGlow" cx="30%" cy="20%" r="80%">
-                    <stop offset="0%" stopColor="#6f7d60" />
-                    <stop offset="48%" stopColor="#26241c" />
-                    <stop offset="100%" stopColor="#b97818" />
-                  </radialGradient>
-                </defs>
-              </svg>
+            <span className="atlas-editorial-rule" aria-hidden="true" />
+            <span className="atlas-editorial-wordmark" aria-hidden="true">
+              <span>Psalms</span>
+              <small>Companion</small>
             </span>
-            <span className="atlas-brand-title">Psalms Companion</span>
           </button>
           <nav className="atlas-top-nav no-scrollbar" aria-label="Main navigation">
             {navItems.map(([id, label]) => (

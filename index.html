@@ -118,44 +118,36 @@
         min-width: 0;
       }
 
-      .atlas-logo-mark {
-        position: relative;
-        display: inline-flex;
-        width: 36px;
-        height: 36px;
-        flex: 0 0 36px;
-        align-items: center;
-        justify-content: center;
-        border-radius: 999px;
-        border: 1px solid rgba(101, 74, 43, 0.18);
-        background: rgba(255, 248, 234, 0.58);
-        box-shadow:
-          0 10px 24px rgba(45, 35, 24, 0.13),
-          inset 0 1px 0 rgba(255, 255, 255, 0.58);
+      .atlas-editorial-rule {
+        width: 3px;
+        height: 43px;
+        flex: 0 0 3px;
+        background: #b69554;
       }
 
-      .atlas-logo-mark::after {
-        content: "";
-        position: absolute;
-        inset: -3px;
-        z-index: -1;
-        border-radius: inherit;
-        background: radial-gradient(circle, rgba(236, 208, 138, 0.26), transparent 68%);
+      .atlas-editorial-wordmark {
+        display: flex;
+        flex-direction: column;
+        color: #152238;
+        white-space: nowrap;
       }
 
-      .atlas-logo-mark svg {
-        width: 26px;
-        height: 26px;
-        display: block;
-        filter: drop-shadow(0 2px 4px rgba(17, 16, 13, 0.25));
+      .atlas-editorial-wordmark > span {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 31px;
+        font-weight: 600;
+        line-height: 0.9;
       }
 
-      .atlas-brand-title {
-        display: block;
-        font-family: "DM Serif Display", Georgia, serif;
-        font-size: 26px;
-        letter-spacing: -0.025em;
+      .atlas-editorial-wordmark > small {
+        margin-top: 4px;
+        color: #a27e42;
+        font-family: Inter, sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.27em;
         line-height: 1;
+        text-transform: uppercase;
       }
 
       .atlas-top-nav {
@@ -461,19 +453,8 @@
           padding: 8px 12px;
         }
 
-        .atlas-brand-title {
-          font-size: 22px;
-        }
-
-        .atlas-logo-mark {
-          width: 32px;
-          height: 32px;
-          flex-basis: 32px;
-        }
-
-        .atlas-logo-mark svg {
-          width: 24px;
-          height: 24px;
+        .atlas-editorial-wordmark > span {
+          font-size: 28px;
         }
 
         .atlas-top-nav {
@@ -516,8 +497,16 @@
           padding: 8px 10px;
         }
 
-        .atlas-brand-title {
-          font-size: 20px;
+        .atlas-editorial-rule {
+          height: 37px;
+        }
+
+        .atlas-editorial-wordmark > span {
+          font-size: 25px;
+        }
+
+        .atlas-editorial-wordmark > small {
+          font-size: 8px;
         }
 
         .atlas-top-nav {
@@ -566,7 +555,7 @@
     <link rel="stylesheet" href="/global-shell.css?v=mbe-20260911-1" />
     <script defer src="/mbe-unified.js?v=shell-links-2"></script>
     <link rel="stylesheet" href="/tailwind.css?v=psalms-20260718-1" />
-    <link rel="stylesheet" href="/brand-design.css?v=psalms-brand-4" />
+    <link rel="stylesheet" href="/brand-design.css?v=psalms-brand-5" />
   </head>
   <body>
     <header class="mbe-global-shell" data-tool="psalms" data-embedded="true">
@@ -618,7 +607,7 @@
       </div>
     </header>
 <div id="root"></div>
-    <script type="module" src="/app.js?v=psalms-brand-4"></script>
+    <script type="module" src="/app.js?v=psalms-brand-5"></script>
     <footer class="mbe-global-footer" data-tool="psalms">
       <div class="mbe-shell-wrap mbe-footer-wrap">
         <a class="mbe-footer-brand" href="https://mybibleexplorer.com" aria-label="My Bible Explorer home"><img class="mbe-footer-logo" src="https://mybibleexplorer.com/assets/my-bible-explorer-logo.png?v=mbe-20260715-1" alt="My Bible Explorer" width="107" height="34"></a>

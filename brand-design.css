@@ -18,7 +18,7 @@ body, .atlas-page {
 .atlas-page::before { display: none; }
 .atlas-shell { width: min(1180px, calc(100% - 48px)); }
 .atlas-page .font-display, .atlas-page .atlas-section-title,
-.atlas-brand-title, .atlas-reader-aside h2, .atlas-reader-card h3 {
+.atlas-reader-aside h2, .atlas-reader-card h3 {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 600;
   letter-spacing: 0;
@@ -34,17 +34,7 @@ body, .atlas-page {
   box-shadow: none;
 }
 .atlas-top-strip > button:first-child { min-width: 0; }
-.atlas-logo-mark {
-  width: 32px;
-  height: 32px;
-  flex-basis: 32px;
-  border: 1px solid #d8c9aa;
-  background: #fff;
-  box-shadow: none;
-}
-.atlas-logo-mark::after { display: none; }
-.atlas-logo-mark svg { width: 23px; height: 23px; filter: none; }
-.atlas-brand-title { color: var(--brand-ink); font-size: 25px; }
+.atlas-brand-button { gap: 12px; }
 .atlas-top-nav { gap: 14px; }
 .atlas-top-nav button {
   border-radius: 0;
@@ -298,7 +288,6 @@ body, .atlas-page {
 @media (max-width: 680px) {
   .atlas-shell { width: min(100% - 32px, 1180px); }
   .atlas-top-strip { top: 46px; min-height: 78px; padding: 6px 16px; }
-  .atlas-brand-title { font-size: 20px; }
   .atlas-top-nav { gap: 13px; }
   .atlas-top-nav button { font-size: 9px; }
   .atlas-dark-button { padding: 9px 10px; font-size: 9px; }

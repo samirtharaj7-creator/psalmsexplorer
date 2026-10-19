@@ -29,10 +29,10 @@ for (const [label, pattern] of [
 if (!/<link[^>]+href=["']\/tailwind\.css\?v=psalms-20260718-1["']/i.test(html)) {
   failures.push("index.html does not load the compiled Tailwind stylesheet.");
 }
-if (!/<script[^>]+type=["']module["'][^>]+src=["']\/app\.js\?v=psalms-brand-4["']/i.test(html)) {
+if (!/<script[^>]+type=["']module["'][^>]+src=["']\/app\.js\?v=psalms-brand-5["']/i.test(html)) {
   failures.push("index.html does not load the precompiled JavaScript module.");
 }
-if (!/<link[^>]+href=["']\/brand-design\.css\?v=psalms-brand-4["']/i.test(html) || !brandCss.includes(".finder-result")) {
+if (!/<link[^>]+href=["']\/brand-design\.css\?v=psalms-brand-5["']/i.test(html) || !brandCss.includes(".finder-result")) {
   failures.push("index.html does not load the brand redesign stylesheet.");
 }
 
